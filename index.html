@@ -664,14 +664,43 @@ function setLoading(on){
 async function loadAll(){
   setLoading(true);
   renderLinks();
-  // 1. Buscar dados em paralelo: câmbio, macro, focus e commodities (via Claude+web search)
-  const [fx,macro,commodities]=await Promise.all([loadFX(),loadMacro(),loadCommodities()]);
-  // 2. Histórico e Focus em paralelo
-  await Promise.all([loadFXHist(),loadFocus()]);
-  // 3. Alertas (usam commodities reais agora)
-  buildAlerts(fx,macro);
-  // 4. Análise de mercado (recebe dados reais de commodities)
-  loadComment(fx,macro);
+  
+  // Cada seção carrega independente — se uma falhar, as outras continuam
+  let fx=null, macro=null;
+  
+  // 1. Câmbio
+  try{ fx=await loadFX(); }catch(e){
+    console.error('Erro câmbio:',e);
+    document.getElementById('fxCards').innerHTML='<div class="card neu" style="grid-column:1/-1;color:var(--amber);padding:16px;font-size:14px">⚠️ Erro ao carregar câmbio: '+e.message+'</div>';
+  }
+  
+  // 2. Inflação / Macro
+  try{ macro=await loadMacro(); }catch(e){
+    console.error('Erro macro:',e);
+    document.getElementById('macroCards').innerHTML='<div class="card neu" style="grid-column:1/-1;color:var(--amber);padding:16px;font-size:14px">⚠️ Erro ao carregar indicadores BCB: '+e.message+'</div>';
+  }
+  
+  // 3. Histórico câmbio
+  try{ await loadFXHist(); }catch(e){ console.error('Erro histórico FX:',e); }
+  
+  // 4. Focus
+  try{ await loadFocus(); }catch(e){
+    console.error('Erro Focus:',e);
+    document.getElementById('focusGrid').innerHTML='<div style="grid-column:1/-1;color:var(--amber);font-size:13px;padding:12px">⚠️ Focus indisponível. <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" style="color:var(--amarelo)">Consulte no BCB</a></div>';
+  }
+  
+  // 5. Commodities (Claude API — pode falhar fora do claude.ai)
+  try{ await loadCommodities(); }catch(e){
+    console.error('Erro commodities:',e);
+    document.getElementById('commBody').innerHTML='<tr><td colspan="5" style="color:var(--amber);padding:16px;font-size:14px">⚠️ Erro ao buscar commodities. Use os links LME/TE abaixo para cotações ao vivo.</td></tr>';
+  }
+  
+  // 6. Alertas
+  try{ buildAlerts(fx,macro); }catch(e){ console.error('Erro alertas:',e); }
+  
+  // 7. Análise de mercado (Claude API — pode falhar)
+  try{ loadComment(fx,macro); }catch(e){ console.error('Erro análise:',e); }
+  
   const now=new Date();
   const ts='Atualizado: '+now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+' · '+now.toLocaleDateString('pt-BR');
   document.getElementById('ts').textContent=ts;
