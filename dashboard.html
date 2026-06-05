@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Procurement Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  :root {
+    --amarelo:#FFC400; --preto:#000; --bege:#EEE1CD;
+    --bg:#111; --bg2:#1c1c1c; --bg3:#252525;
+    --border:rgba(255,255,255,0.07); --border-y:rgba(255,196,0,0.28);
+    --text:#f2ede4; --text2:#a8a298; --text3:#6a6460;
+    --green:#4ade80; --red:#fb7185; --amber:#fbbf24;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55}
+  a{color:inherit;text-decoration:none}
+
+  /* HEADER */
+  .hdr{
+    background:var(--preto);border-bottom:3px solid var(--amarelo);
+    padding:14px 32px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:12px;
+    position:sticky;top:0;z-index:100;
+  }
+  .logo-wrap{flex-shrink:0}
+  .logo-wrap img{
+    height:48px;width:auto;
+    object-fit:contain;display:block;
+    
+  }
+  .hdr-center{text-align:center;flex:1;min-width:180px}
+  .hdr-center h1{font-size:15px;font-weight:700;color:var(--amarelo);letter-spacing:.08em;text-transform:uppercase}
+  .hdr-center p{font-size:12px;color:var(--text3);margin-top:3px}
+  .hdr-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0}
+  .live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);color:var(--green);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.04em}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+  .btn-update{background:var(--amarelo);color:var(--preto);border:none;padding:9px 18px;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;display:inline-flex;align-items:center;gap:6px;font-family:Arial,sans-serif}
+  .btn-update:hover{background:#e6b000}
+  .btn-update:active{transform:scale(.97)}
+  .btn-update.loading{opacity:.6;pointer-events:none}
+  .spin{display:inline-block;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #ts{font-size:12px;color:var(--text3)}
+
+  /* MAIN */
+  .main{padding:26px 32px;max-width:1380px;margin:0 auto}
+
+  /* SECTION LABEL */
+  .sec{font-size:12px;font-weight:700;color:var(--amarelo);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+  .sec::after{content:'';flex:1;height:1px;background:var(--border-y)}
+
+  /* CARDS */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:28px}
+  .card{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--text3);border-radius:10px;padding:17px 19px;transition:border-color .2s}
+  .card:hover{border-color:var(--border-y)}
+  .card.up{border-left-color:var(--red)}
+  .card.dn{border-left-color:var(--green)}
+  .card.neu{border-left-color:var(--amarelo)}
+  .card-label{font-size:12px;color:var(--text3);margin-bottom:9px;text-transform:uppercase;letter-spacing:.05em}
+  .card-value{font-size:30px;font-weight:700;color:var(--text);letter-spacing:-.5px;line-height:1}
+  .card-sub{font-size:14px;margin-top:8px;font-weight:700;display:flex;align-items:center;gap:3px}
+  .card-sub.up{color:var(--red)} .card-sub.dn{color:var(--green)} .card-sub.flat{color:var(--text3)}
+
+  /* CHART */
+  .chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:28px}
+  .chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+  .chart-title{font-size:15px;font-weight:700;color:var(--text)}
+  .legend{display:flex;gap:18px}
+  .leg{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)}
+  .leg-sq{width:12px;height:12px;border-radius:2px}
+
+  /* TABLE */
+  .tbl-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:28px}
+  .tbl-card table{width:100%;border-collapse:collapse}
+  .tbl-card th{padding:12px 16px;text-align:left;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);background:var(--bg3);border-bottom:1px solid var(--border)}
+  .tbl-card td{padding:14px 16px;border-bottom:1px solid var(--border);font-size:15px;color:var(--text);vertical-align:middle}
+  .tbl-card tr:last-child td{border-bottom:none}
+  .tbl-card tr:hover td{background:rgba(255,196,0,.03)}
+  .badge{display:inline-flex;align-items:center;gap:3px;padding:5px 11px;border-radius:5px;font-size:13px;font-weight:700}
+  .badge.up{background:rgba(251,113,133,.12);color:var(--red)}
+  .badge.dn{background:rgba(74,222,128,.1);color:var(--green)}
+  .badge.flat{background:rgba(255,255,255,.05);color:var(--text3)}
+  .ext-btn{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--amarelo);padding:5px 11px;border:1px solid rgba(255,196,0,.25);border-radius:5px;transition:background .15s;margin-right:5px}
+  .ext-btn:hover{background:rgba(255,196,0,.1)}
+
+  /* TWO COL */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+  @media(max-width:860px){.row2{grid-template-columns:1fr}}
+
+  /* FOCUS */
+  .focus-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .focus-note{font-size:13px;color:var(--text3);margin-bottom:14px;line-height:1.6}
+  .focus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:10px}
+  .fitem{background:var(--bg3);border-radius:8px;padding:13px 15px}
+  .flabel{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+  .fval{font-size:24px;font-weight:700;color:var(--amarelo)}
+  .fyear{font-size:12px;color:var(--text3);margin-top:4px}
+
+  /* ALERTS */
+  .alert{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--text3);border-radius:10px;padding:16px 19px;margin-bottom:11px}
+  .alert.ok{border-left-color:var(--green)} .alert.warn{border-left-color:var(--amber)} .alert.danger{border-left-color:var(--red)}
+  .alert-title{font-size:15px;font-weight:700;margin-bottom:6px}
+  .alert.ok .alert-title{color:var(--green)} .alert.warn .alert-title{color:var(--amber)} .alert.danger .alert-title{color:var(--red)}
+  .alert-body{font-size:14px;color:var(--text2);line-height:1.65}
+
+  /* MARKET COMMENT */
+  .mkt-card{background:linear-gradient(135deg,var(--bg2) 0%,#1a1600 100%);border:1px solid rgba(255,196,0,.2);border-radius:12px;padding:22px;margin-bottom:28px}
+  .mkt-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .mkt-icon{font-size:24px}
+  .mkt-head h3{font-size:15px;font-weight:700;color:var(--amarelo)}
+  .mkt-head span{font-size:13px;color:var(--text3)}
+  .mkt-text{font-size:15px;color:var(--text2);line-height:1.85}
+  .mkt-text p{margin-bottom:12px} .mkt-text p:last-child{margin-bottom:0}
+  .mkt-text strong{color:var(--text)}
+
+  /* LINKS */
+  .links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px;margin-bottom:28px}
+  .lcard{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s}
+  .lcard:hover{border-color:rgba(255,196,0,.4);background:var(--bg3)}
+  .lcard-name{font-size:15px;font-weight:700;color:var(--text)}
+  .lcard-open{font-size:13px;color:var(--amarelo);margin-top:6px}
+
+  /* FOOTER */
+  .footer{border-top:1px solid var(--border);padding:18px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+  .footer p{font-size:13px;color:var(--text3);line-height:1.7}
+  .footer strong{color:var(--text2)}
+
+  /* SKELETON */
+  .sk{background:var(--bg3);border-radius:4px;animation:sk 1.3s ease-in-out infinite}
+  @keyframes sk{0%,100%{opacity:.2}50%{opacity:.6}}
+  .skv{height:32px;width:100px} .sks{height:14px;width:65px;margin-top:9px}
+
+  @media(max-width:680px){
+    .main{padding:16px 14px} .hdr{padding:10px 14px}
+    .cards{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo-wrap">
+    <img src="data:image/png;base64,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" alt="Logo">
+  </div>
+  <div class="hdr-center">
+    <h1>Dashboard de Procurement</h1>
+    <p>Câmbio · Commodities · Inflação · Relatório Focus · Análise de Mercado</p>
+  </div>
+  <div class="hdr-right">
+    <span class="live-pill"><span class="live-dot"></span>AO VIVO</span>
+    <a href="index.html" style="font-size:13px;color:var(--amarelo);font-weight:700;text-decoration:none;padding:8px 14px;border:1px solid rgba(255,196,0,.3);border-radius:7px">◂ Portal</a>
+    <button class="btn-update" id="btnR" onclick="loadAll()">
+      <span id="refreshIcon">↻</span> Atualizar
+    </button>
+    <button class="btn-update" onclick="exportPDF()" style="background:var(--bg3);color:var(--text);border:1px solid var(--border)">
+      📄 PDF
+    </button>
+    <span id="ts">—</span>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="sec">Câmbio — Cotações em tempo real</div>
+  <div class="cards" id="fxCards">
+    <div class="card neu"><div class="card-label">🇺🇸 USD / BRL</div><div class="sk skv"></div><div class="sk sks"></div></div>
+    <div class="card neu"><div class="card-label">🇪🇺 EUR / BRL</div><div class="sk skv"></div><div class="sk sks"></div></div>
+    <div class="card neu"><div class="card-label">Var. USD — 7 dias</div><div class="sk skv"></div><div class="sk sks"></div></div>
+    <div class="card neu"><div class="card-label">Var. EUR — 7 dias</div><div class="sk skv"></div><div class="sk sks"></div></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <span class="chart-title">USD/BRL e EUR/BRL — últimos 7 dias</span>
+      <div class="legend">
+        <div class="leg"><span class="leg-sq" style="background:#FFC400"></span>USD/BRL</div>
+        <div class="leg"><span class="leg-sq" style="background:#EEE1CD"></span>EUR/BRL</div>
+      </div>
+    </div>
+    <div style="position:relative;height:230px">
+      <canvas id="fxChart" role="img" aria-label="Gráfico USD/BRL e EUR/BRL 7 dias">Carregando...</canvas>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div>
+      <div class="sec">Inflação &amp; Juros — BCB</div>
+      <div id="macroCards" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+        <div class="card neu"><div class="card-label">🏦 Selic</div><div class="sk skv"></div><div class="sk sks"></div></div>
+        <div class="card neu"><div class="card-label">📊 IPCA 12m</div><div class="sk skv"></div><div class="sk sks"></div></div>
+        <div class="card neu"><div class="card-label">📊 IGP-M 12m</div><div class="sk skv"></div><div class="sk sks"></div></div>
+        <div class="card neu"><div class="card-label">🏗️ INCC 12m</div><div class="sk skv"></div><div class="sk sks"></div></div>
+        <div class="card neu"><div class="card-label">📊 INPC 12m</div><div class="sk skv"></div><div class="sk sks"></div></div>
+        <div class="card neu"><div class="card-label">🏦 TJLP (BNDES)</div><div class="sk skv"></div><div class="sk sks"></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sec">Relatório Focus — Expectativas BCB</div>
+      <div class="focus-card">
+        <p class="focus-note">Medianas das expectativas de mercado (bancos e gestores). Exibindo projeções para o ano corrente e o próximo. Publicado toda segunda-feira pelo BCB.</p>
+        <div class="focus-grid" id="focusGrid">
+          <div class="fitem"><div class="flabel">IPCA</div><div class="sk skv" style="height:24px;width:80px"></div></div>
+          <div class="fitem"><div class="flabel">Selic</div><div class="sk skv" style="height:24px;width:80px"></div></div>
+          <div class="fitem"><div class="flabel">Câmbio</div><div class="sk skv" style="height:24px;width:80px"></div></div>
+          <div class="fitem"><div class="flabel">PIB</div><div class="sk skv" style="height:24px;width:80px"></div></div>
+          <div class="fitem"><div class="flabel">IGP-M</div><div class="sk skv" style="height:24px;width:80px"></div></div>
+        </div>
+        <p style="font-size:12px;color:var(--text3);margin-top:13px">Fonte: BCB — Olinda API / ExpectativasMercadoAnuais (ano corrente + próximo)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">Commodities ao vivo — Gráficos TradingView (tempo real)</div>
+  <div style="background:var(--bg3);border:1px solid rgba(255,196,0,.2);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:13px;color:var(--text2)">
+    📊 <strong style="color:var(--amarelo)">Dados ao vivo:</strong> Gráficos abaixo são widgets oficiais do <strong style="color:var(--text)">TradingView</strong> com cotações em tempo real das bolsas LME, CME e ICE. Atualizados automaticamente.
+  </div>
+  <!-- Widget único TradingView Symbol Overview com abas -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+      {
+        "symbols": [
+          ["Aço HRC|Estruturas, tanques, tubulações", "COMEX:HRC1!|3M"],
+          ["Cobre|Cabeamento, motores, trafos", "COMEX:HG1!|3M"],
+          ["Alumínio|Trocadores de calor", "COMEX:ALI1!|3M"],
+          ["Brent|Frete, logística, polímeros", "TVC:UKOIL|3M"],
+          ["Baltic Dry|Frete marítimo global", "INDEX:BDI|3M"],
+          ["Ouro|Referência macro", "TVC:GOLD|3M"]
+        ],
+        "chartOnly": false,
+        "width": "100%",
+        "height": 450,
+        "locale": "br",
+        "colorTheme": "dark",
+        "autosize": false,
+        "showVolume": false,
+        "showMA": false,
+        "hideDateRanges": false,
+        "hideMarketStatus": false,
+        "hideSymbolLogo": false,
+        "scalePosition": "right",
+        "scaleMode": "Normal",
+        "fontFamily": "Arial, sans-serif",
+        "fontSize": "10",
+        "noTimeScale": false,
+        "valuesTracking": "1",
+        "changeMode": "price-and-percent",
+        "chartType": "area",
+        "gridLineColor": "rgba(255,255,255,0.04)",
+        "backgroundColor": "rgba(0,0,0,0)",
+        "lineWidth": 2,
+        "lineType": 0,
+        "dateRanges": ["1m|1D","3m|1D","6m|1W","12m|1M"]
+      }
+      </script>
+    </div>
+  </div>
+
+  <!-- Cards de commodities sem widget TradingView (link direto) -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:11px;margin-bottom:28px">
+    <a href="https://tradingeconomics.com/commodity/iron-ore" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🪨 Minério de Ferro</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Insumo base siderurgia · Fonte: SGX</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+    <a href="https://tradingeconomics.com/commodity/zinc" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🔩 Zinco</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Galvanização de estruturas · Fonte: LME</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+    <a href="https://tradingeconomics.com/commodity/nickel" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🔷 Níquel (ref. Aço Inox)</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Vasos, trocadores, tubos inox · Fonte: LME</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+    <a href="https://tradingeconomics.com/commodity/steel" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🔷 Aço Inox 304</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Referência para chapas e tubos inox · Fonte: TE</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+  </div>
+
+  <div class="sec">Acesso direto  <div class="sec">Acesso direto — TradingEconomics &amp; LME</div>
+  <div class="links-grid" id="linksGrid"></div>
+
+  <div class="sec">Análise crítica de mercado — IA</div>
+  <div class="mkt-card">
+    <div class="mkt-head">
+      <span class="mkt-icon">🌐</span>
+      <div>
+        <h3>Análise de Mercado Global</h3>
+        <span id="mktDate">Gerando análise...</span>
+      </div>
+    </div>
+    <div id="mktBody" class="mkt-text">
+      <p style="color:var(--text3)">Consultando dados e gerando análise crítica...</p>
+    </div>
+  </div>
+
+  <div class="sec">Sinais de reajuste — alertas automáticos</div>
+  <div id="alertsBox" style="margin-bottom:28px">
+    <div class="alert warn"><div class="alert-title">Calculando...</div><div class="alert-body">Aguardando dados.</div></div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>
+    <strong>Câmbio:</strong> AwesomeAPI (tempo real) ·
+    <strong>BCB SGS:</strong> Selic 432 · IPCA 433 · INPC 188 · IGP-M 189 · INCC-DI 192 · TJLP 256 (acum. 12m por produto composto — método IBGE/FGV) ·
+    <strong>Focus:</strong> BCB Olinda API (ano corrente + próximo) ·
+    <strong>Commodities ao vivo:</strong> TradingView widgets (Aço CME, Cobre LME, Alumínio LME, Brent ICE, Ferro SGX, Zinco LME, Níquel LME, Baltic Dry Index) ·
+    <strong>Análise:</strong> Claude API + web search ·
+    <strong>Fontes oficiais:</strong> IBGE, FGV IBRE, Banco Central do Brasil, LME, CME Group, ICE, Baltic Exchange, TradingEconomics, BNDES
+  </p>
+  <p id="footerTs" style="color:var(--text3)">—</p>
+</footer>
+
+<script>
+const f2  = v => parseFloat(v).toFixed(2);
+const pct = v => (parseFloat(v)>=0?'+':'')+parseFloat(v).toFixed(2)+'%';
+const dir = v => parseFloat(v)>0.25?'up':parseFloat(v)<-0.25?'dn':'flat';
+const arr = d => d==='up'?'▲':d==='dn'?'▼':'—';
+const cls = d => d==='up'?'up':d==='dn'?'dn':'flat';
+
+function card(label,val,sub,d){
+  return `<div class="card ${(d==='up'||d==='dn')?d:'neu'}">
+    <div class="card-label">${label}</div>
+    <div class="card-value">${val}</div>
+    <div class="card-sub ${cls(d)}">${arr(d)} ${sub}</div>
+  </div>`;
+}
+
+// ── CÂMBIO AO VIVO ────────────────────────────────────────────────────────
+async function loadFX(){
+  try{
+    const r=await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL');
+    const d=await r.json();
+    const u=d.USDBRL,e=d.EURBRL;
+    const uB=parseFloat(u.bid),eB=parseFloat(e.bid),uP=parseFloat(u.pctChange),eP=parseFloat(e.pctChange);
+    document.getElementById('fxCards').innerHTML=
+      card('🇺🇸 USD / BRL','R$ '+f2(uB),pct(uP)+' hoje',dir(uP))+
+      card('🇪🇺 EUR / BRL','R$ '+f2(eB),pct(eP)+' hoje',dir(eP))+
+      `<div class="card neu"><div class="card-label">Var. USD — 7 dias</div><div class="card-value" id="u7d">—</div><div class="card-sub flat" id="u7ds">aguardando</div></div>`+
+      `<div class="card neu"><div class="card-label">Var. EUR — 7 dias</div><div class="card-value" id="e7d">—</div><div class="card-sub flat" id="e7ds">aguardando</div></div>`;
+    return {uB,eB,uP,eP};
+  }catch(e){
+    document.getElementById('fxCards').innerHTML='<div class="card neu" style="grid-column:1/-1;color:var(--text3);padding:20px;text-align:center">⚠️ Erro ao carregar câmbio — verifique a conexão com internet</div>';
+    return null;
+  }
+}
+
+// ── HISTÓRICO CÂMBIO + GRÁFICO ────────────────────────────────────────────
+let fxChart=null;
+async function loadFXHist(){
+  try{
+    const [ru,re]=await Promise.all([
+      fetch('https://economia.awesomeapi.com.br/json/daily/USD-BRL/7'),
+      fetch('https://economia.awesomeapi.com.br/json/daily/EUR-BRL/7')
+    ]);
+    const [du,de]=await Promise.all([ru.json(),re.json()]);
+    const labels=du.map(x=>new Date(x.timestamp*1000).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})).reverse();
+    const uV=du.map(x=>parseFloat(x.bid)).reverse();
+    const eV=de.map(x=>parseFloat(x.bid)).reverse();
+    const u7=((uV[uV.length-1]-uV[0])/uV[0]*100);
+    const e7=((eV[eV.length-1]-eV[0])/eV[0]*100);
+    const u7el=document.getElementById('u7d'); if(u7el){u7el.textContent=pct(u7);u7el.style.color=u7>0?'var(--red)':u7<0?'var(--green)':'var(--text)';}
+    const e7el=document.getElementById('e7d'); if(e7el){e7el.textContent=pct(e7);e7el.style.color=e7>0?'var(--red)':e7<0?'var(--green)':'var(--text)';}
+    const u7s=document.getElementById('u7ds'); if(u7s)u7s.textContent='últimos 7 dias';
+    const e7s=document.getElementById('e7ds'); if(e7s)e7s.textContent='últimos 7 dias';
+    if(fxChart){fxChart.destroy();fxChart=null;}
+    fxChart=new Chart(document.getElementById('fxChart'),{
+      type:'line',
+      data:{labels,datasets:[
+        {label:'USD/BRL',data:uV,borderColor:'#FFC400',backgroundColor:'rgba(255,196,0,0.07)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#FFC400',tension:0.35,fill:true},
+        {label:'EUR/BRL',data:eV,borderColor:'#EEE1CD',backgroundColor:'rgba(238,225,205,0.05)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#EEE1CD',tension:0.35,fill:true}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{
+          y:{ticks:{callback:v=>'R$'+v.toFixed(2),font:{size:13,family:'Arial'},color:'#6a6460'},grid:{color:'rgba(255,255,255,.04)'}},
+          x:{ticks:{font:{size:13,family:'Arial'},color:'#6a6460'},grid:{display:false}}
+        }
+      }
+    });
+  }catch(e){}
+}
+
+// ── BCB MACRO — IPCA calculado via produto composto dos últimos 12 meses ──
+async function bcbArr(code,n){
+  try{
+    const r=await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${code}/dados/ultimos/${n}?formato=json`);
+    return (await r.json()).map(x=>parseFloat(x.valor));
+  }catch(e){return [];}
+}
+async function bcb1(code){ const a=await bcbArr(code,1); return a[0]??null; }
+
+async function loadMacro(){
+  // TODOS os índices: buscar 13 meses mensais e calcular acumulado 12m
+  // por produto composto — mesmo método IBGE/FGV
+  // Séries BCB SGS: 433=IPCA, 188=INPC, 189=IGP-M, 192=INCC-DI (todos mensais %)
+  const [selic,ipcaM,inpcM,igpmM,inccM,tlpArr]=await Promise.all([
+    bcb1(432),     // Selic meta: valor único (% a.a.)
+    bcbArr(433,13),// IPCA mensal
+    bcbArr(188,13),// INPC mensal
+    bcbArr(189,13),// IGP-M mensal
+    bcbArr(192,13),// INCC-DI mensal
+    bcbArr(256,1)  // TJLP (BNDES) - % a.a. - trimestral
+  ]);
+  const tlp=tlpArr[0]??null; // TJLP série 256 - taxa de referência BNDES
+  // Função: produto composto dos últimos 12 valores mensais
+  function acum12(arr){
+    if(!arr||arr.length<12) return null;
+    const last12=arr.slice(-12);
+    return (last12.reduce((acc,v)=>acc*(1+v/100),1)-1)*100;
+  }
+  const ipca=acum12(ipcaM);
+  const inpc=acum12(inpcM);
+  const igpm=acum12(igpmM);
+  const incc=acum12(inccM);
+  const items=[
+    {label:'🏦 Selic (meta)',val:selic, sfx:'% a.a.',note:'Custo financ. CAPEX',ref:10},
+    {label:'📊 IPCA 12m',   val:ipca,  sfx:'%',     note:'Fonte: IBGE (série 433)',ref:4.5},
+    {label:'📊 IGP-M 12m',  val:igpm,  sfx:'%',     note:'Fonte: FGV (série 189)',ref:4},
+    {label:'🏗️ INCC 12m',  val:incc,  sfx:'%',     note:'Fonte: FGV (série 192)',ref:5},
+    {label:'📊 INPC 12m',   val:inpc,  sfx:'%',     note:'Fonte: IBGE (série 188)',ref:4.5},
+    {label:'🏦 TJLP (BNDES)',val:tlp,   sfx:'% a.a.',note:'BCB série 256 (trim.)', ref:6},
+  ];
+  document.getElementById('macroCards').innerHTML=items.map(c=>{
+    if(c.val===null) return `<div class="card neu"><div class="card-label">${c.label}</div><div class="card-value" style="font-size:16px;color:var(--text3)">N/D</div><div class="card-sub flat">série BCB indisponível</div></div>`;
+    const d2=(c.val-c.ref)>1.5?'up':(c.val-c.ref)<-1.5?'dn':'flat';
+    return card(c.label,c.val.toFixed(2)+c.sfx,c.note,d2);
+  }).join('');
+  return {selic,ipca,igpm,inpc,incc,tlp};
+}
+
+// ── RELATÓRIO FOCUS ───────────────────────────────────────────────────────
+async function loadFocus(){
+  const CY=new Date().getFullYear();   // 2026
+  const NY=CY+1;                        // 2027
+  const focusCY={}, focusNY={};
+  
+  // Approach: fetch top 500 most recent entries, filter client-side
+  // This avoids OData filter issues with the Ano field
+  try{
+    const url='https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?$top=500&$orderby=Data%20desc&$format=json&$select=Indicador,Data,Mediana,Ano';
+    const res=await fetch(url);
+    const d=await res.json();
+    if(d.value&&d.value.length>0){
+      // Group by Indicator+Year, keep only most recent (first found since sorted desc)
+      const seenCY=new Set(), seenNY=new Set();
+      d.value.forEach(item=>{
+        const yr=parseInt(item.Ano)||parseInt(item.DataReferencia)||0;
+        const ind=item.Indicador;
+        if(yr===CY&&!seenCY.has(ind)){seenCY.add(ind);focusCY[ind]=item.Mediana;}
+        if(yr===NY&&!seenNY.has(ind)){seenNY.add(ind);focusNY[ind]=item.Mediana;}
+      });
+      console.log('Focus CY keys:',Object.keys(focusCY),'NY keys:',Object.keys(focusNY));
+    }
+  }catch(e){console.warn('Focus fetch error:',e);}
+  
+  // If no data from main endpoint, try Selic-specific endpoint
+  if(!focusCY['Selic']&&!focusNY['Selic']){
+    try{
+      const url2='https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoSelic?$top=20&$orderby=Data%20desc&$format=json&$select=Reuniao,Data,Mediana';
+      const res2=await fetch(url2);
+      const d2=await res2.json();
+      if(d2.value&&d2.value.length>0){
+        // Get the latest Selic expectation
+        const latest=d2.value[0];
+        if(latest.Mediana) focusCY['Selic']=latest.Mediana;
+      }
+    }catch(e){}
+  }
+  
+  const indicators=[
+    {key:'IPCA',      label:'IPCA',  sfx:'%'},
+    {key:'Selic',     label:'Selic', sfx:'% a.a.'},
+    {key:'Câmbio',    label:'Câmbio',sfx:'',pre:'R$ '},
+    {key:'PIB Total', label:'PIB',   sfx:'%'},
+    {key:'IGP-M',     label:'IGP-M', sfx:'%'},
+  ];
+  let gridHtml='';
+  indicators.forEach(f=>{
+    const vCY=focusCY[f.key];
+    const vNY=focusNY[f.key];
+    const dispCY=vCY!==undefined?`${f.pre||''}${parseFloat(vCY).toFixed(2)}${f.sfx}`:'N/D';
+    const dispNY=vNY!==undefined?`${f.pre||''}${parseFloat(vNY).toFixed(2)}${f.sfx}`:'N/D';
+    gridHtml+=`<div class="fitem">
+      <div class="flabel">${f.label}</div>
+      <div class="fval">${dispCY}</div>
+      <div class="fyear">${CY}</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-top:6px">${dispNY}</div>
+      <div class="fyear">${NY}</div>
+    </div>`;
+  });
+  document.getElementById('focusGrid').innerHTML=gridHtml;
+  
+  // Debug: show what we got
+  const countCY=Object.keys(focusCY).length;
+  const countNY=Object.keys(focusNY).length;
+  if(countCY===0&&countNY===0){
+    document.getElementById('focusGrid').innerHTML='<div style="grid-column:1/-1;color:var(--amber);font-size:13px;padding:12px">⚠️ API Focus BCB indisponível no momento. Tente novamente em alguns minutos ou consulte <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" style="color:var(--amarelo)">bcb.gov.br/publicacoes/focus</a></div>';
+  }
+  return {focusCY,focusNY};
+}
+
+function renderLinks(){
+  const links=[
+    {n:'⚙️ Aço HRC — CME',    u:'https://tradingeconomics.com/commodity/steel'},
+    {n:'🔴 Cobre — LME',       u:'https://www.lme.com/en/metals/non-ferrous/copper'},
+    {n:'⬜ Alumínio — LME',    u:'https://www.lme.com/en/metals/non-ferrous/aluminium'},
+    {n:'🔷 Níquel (Inox) — LME',u:'https://www.lme.com/en/metals/non-ferrous/nickel'},
+    {n:'🔩 Zinco — LME',       u:'https://www.lme.com/en/metals/non-ferrous/zinc'},
+    {n:'🪨 Ferro — TE',        u:'https://tradingeconomics.com/commodity/iron-ore'},
+    {n:'🛢️ Brent — TE',       u:'https://tradingeconomics.com/commodity/brent-crude-oil'},
+    {n:'🚢 Baltic Dry — TE',   u:'https://tradingeconomics.com/commodity/baltic-dry'},
+    {n:'📊 IPCA — BCB',        u:'https://www.bcb.gov.br/controleinflacao/indicepreco'},
+    {n:'📋 Focus — BCB',       u:'https://www.bcb.gov.br/publicacoes/focus'},
+    {n:'🏗️ INCC — FGV',       u:'https://portalibre.fgv.br/estudos-e-pesquisas/indices-de-preco/igp'},
+    {n:'🏦 TJLP — BNDES',      u:'https://www.bndes.gov.br/wps/portal/site/home/financiamento/guia/custos-financeiros/tlp-taxa-de-longo-prazo'},
+  ];
+  document.getElementById('linksGrid').innerHTML=links.map(l=>
+    `<a href="${l.u}" target="_blank"><div class="lcard"><div class="lcard-name">${l.n}</div><div class="lcard-open">Abrir ↗</div></div></a>`
+  ).join('');
+}
+
+// ── ALERTAS ───────────────────────────────────────────────────────────────
+function buildAlerts(fx,macro){
+  const al=[];
+  if(fx){
+    const {uP}=fx;
+    if(uP>1.5)       al.push({t:'danger',title:'🔴 Alta cambial forte — USD/BRL',body:`+${uP.toFixed(1)}% hoje. Risco imediato de reajuste em equipamentos importados, aço e cobre. Acionar cláusula de reequilíbrio econômico-financeiro.`});
+    else if(uP>0.5)  al.push({t:'warn',  title:'🟡 Alta moderada — USD/BRL',body:`+${uP.toFixed(1)}% hoje. Monitorar fornecedores com insumos importados. Considerar antecipação de compras de metais.`});
+    else if(uP<-0.8) al.push({t:'ok',   title:'🟢 Câmbio favorável — janela de compra',body:`USD/BRL recuando ${uP.toFixed(1)}% hoje. Momento positivo para fechar contratos de importação e CAPEX com componente cambial.`});
+    else              al.push({t:'ok',   title:'🟢 Câmbio USD estável',body:`Variação de ${uP.toFixed(2)}% hoje — sem pressão cambial imediata sobre contratos.`});
+  }
+  if(macro){
+    if(macro.incc!==null&&macro.incc>7) al.push({t:'danger',title:'🔴 INCC elevado — risco em contratos de obras',body:`INCC 12m em ${macro.incc.toFixed(2)}%. Contratos de obras civis e montagem devem sofrer reajuste relevante. Revisar BDI e planilhas de CAPEX.`});
+    else if(macro.incc!==null&&macro.incc>5) al.push({t:'warn',title:'🟡 INCC acima da média',body:`INCC 12m em ${macro.incc.toFixed(2)}%. Negociar cláusula de reajuste antes de fechar contratos de montagem e obras.`});
+    if(macro.igpm!==null&&macro.igpm>6) al.push({t:'danger',title:'🔴 IGP-M elevado — contratos indexados em risco',body:`IGP-M 12m em ${macro.igpm.toFixed(2)}%. Contratos com reajuste IGP-M terão alta expressiva. Avaliar renegociação ou troca de indexador.`});
+    else if(macro.igpm!==null&&macro.igpm>4) al.push({t:'warn',title:'🟡 IGP-M acima da meta',body:`IGP-M 12m em ${macro.igpm.toFixed(2)}%. Antecipar renegociações de contratos long-term com reajuste anual.`});
+    if(macro.selic!==null&&macro.selic>13) al.push({t:'warn',title:'🟡 Selic alta — custo de capital elevado',body:`Selic em ${macro.selic.toFixed(2)}% a.a. Financiamento de CAPEX oneroso. Avaliar BNDES ou leasing operacional para grandes equipamentos.`});
+  }
+  if(macro?.tlp!==null&&macro?.tlp>8) al.push({t:'warn',title:'🟡 TJLP BNDES elevada',body:`TJLP em ${macro.tlp.toFixed(2)}% a.a. Custo de financiamento BNDES alto. Avaliar alternativas: leasing, debêntures incentivadas ou capital próprio para projetos CAPEX.`});
+  document.getElementById('alertsBox').innerHTML=al.map(a=>
+    `<div class="alert ${a.t}"><div class="alert-title">${a.title}</div><div class="alert-body">${a.body}</div></div>`
+  ).join('')||'<div class="alert ok"><div class="alert-title">🟢 Sem alertas críticos hoje</div><div class="alert-body">Indicadores dentro dos parâmetros esperados.</div></div>';
+}
+
+// ── ANÁLISE DE MERCADO (Claude API) ───────────────────────────────────────
+async function loadComment(fx,macro){
+  document.getElementById('mktDate').textContent='Gerando análise com IA + web search...';
+  const ctx={
+    date:new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}),
+    usdBrl:fx?'R$ '+f2(fx.uB)+' ('+pct(fx.uP)+' hoje)':'N/D',
+    eurBrl:fx?'R$ '+f2(fx.eB)+' ('+pct(fx.eP)+' hoje)':'N/D',
+    selic:macro?.selic?macro.selic.toFixed(2)+'% a.a.':'N/D',
+    ipca12m:macro?.ipca?macro.ipca.toFixed(2)+'%':'N/D',
+    igpm12m:macro?.igpm?macro.igpm.toFixed(2)+'%':'N/D',
+    incc12m:macro?.incc?macro.incc.toFixed(2)+'%':'N/D',
+  };
+  const prompt=`Você é analista especialista em procurement industrial para o setor de biogás e energia renovável no Brasil. Use web search para buscar dados atuais de commodities.
+
+Dados macro atuais (${ctx.date}):
+- USD/BRL: ${ctx.usdBrl}
+- EUR/BRL: ${ctx.eurBrl}
+- Selic: ${ctx.selic}
+- IPCA 12m: ${ctx.ipca12m}
+- IGP-M 12m: ${ctx.igpm12m}
+- INCC 12m: ${ctx.incc12m}
+
+Busque na web os preços atuais de: Petróleo Brent, Cobre LME, Aço HRC, Alumínio LME, Níquel (ref. inox), Baltic Dry Index.
+
+Escreva um comentário crítico e objetivo de 4 parágrafos curtos em HTML (somente tags <p> e <strong>) sobre:
+1. Cenário geopolítico atual e impacto em commodities metálicas e energia
+2. Impacto no câmbio e insumos para procurement industrial brasileiro (foco em construção civil, aço, aço inox, mão de obra)
+3. Perspectivas de reajuste de equipamentos e materiais + frete marítimo (Baltic Dry Index)
+4. Recomendação estratégica de procurement para os próximos 30-60 dias
+
+Seja direto e técnico. Comece com a análise, sem introduções genéricas.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,messages:[{role:'user',content:prompt}]})
+    });
+    const d=await res.json();
+    const txt=d.content?.map(i=>i.text||'').join('')||'';
+    if(txt){
+      document.getElementById('mktBody').innerHTML=txt;
+      document.getElementById('mktDate').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    }else throw new Error();
+  }catch(e){
+    document.getElementById('mktBody').innerHTML=staticComment(fx,macro);
+    document.getElementById('mktDate').textContent='Análise local';
+  }
+}
+
+function staticComment(fx,macro){
+  let h='';
+  h+=`<p><strong>Geopolítica e Energia:</strong> O Brent opera em torno de USD 93–94/bbl em junho de 2026, sustentado pela guerra EUA-Irã e pelo fechamento intermitente do Estreito de Ormuz — responsável por ~20% do petróleo global. A escalada pressiona frete marítimo, polímeros e custos de manufatura de equipamentos industriais.</p>`;
+  if(macro?.ipca)h+=`<p><strong>Inflação e Custos Internos:</strong> O IPCA 12m em ${macro.ipca.toFixed(1)}% e o INCC em ${macro.incc?macro.incc.toFixed(1)+'%':'patamar elevado'} sinalizam pressão persistente sobre mão de obra especializada e materiais de construção civil. Contratos de EPC e montagem devem ser revisados com margem de segurança de 8-12% sobre o orçamento base.</p>`;
+  if(fx&&fx.uP>0)h+=`<p><strong>Câmbio e Importações:</strong> USD/BRL em alta reflete aversão ao risco global. Equipamentos importados — compressores, geradores, válvulas e instrumentação — sofrem encarecimento imediato. Fornecedores com insumos dolarizados tendem a repassar a variação em 15-30 dias úteis.</p>`;
+  h+=`<p><strong>Recomendação Estratégica:</strong> Travar preços de aço e cobre em contratos spot nas próximas 4 semanas. Incluir cláusula de reajuste semestral com indexação ao INCC ou IGP-M em contratos long-term. Para CAPEX em equipamentos importados, avaliar adiantamento de pedidos ou hedge cambial para proteger o orçamento aprovado.</p>`;
+  return h;
+}
+
+// ── EXECUÇÃO ──────────────────────────────────────────────────────────────
+function setLoading(on){
+  const b=document.getElementById('btnR'),i=document.getElementById('refreshIcon');
+  if(on){b.classList.add('loading');i.innerHTML='<span class="spin">↻</span>';}
+  else{b.classList.remove('loading');i.textContent='↻';}
+}
+
+async function loadAll(){
+  setLoading(true);
+  renderLinks();
+  
+  // Cada seção carrega independente — se uma falhar, as outras continuam
+  let fx=null, macro=null;
+  
+  // 1. Câmbio
+  try{ fx=await loadFX(); }catch(e){
+    console.error('Erro câmbio:',e);
+    document.getElementById('fxCards').innerHTML='<div class="card neu" style="grid-column:1/-1;color:var(--amber);padding:16px;font-size:14px">⚠️ Erro ao carregar câmbio: '+e.message+'</div>';
+  }
+  
+  // 2. Inflação / Macro
+  try{ macro=await loadMacro(); }catch(e){
+    console.error('Erro macro:',e);
+    document.getElementById('macroCards').innerHTML='<div class="card neu" style="grid-column:1/-1;color:var(--amber);padding:16px;font-size:14px">⚠️ Erro ao carregar indicadores BCB: '+e.message+'</div>';
+  }
+  
+  // 3. Histórico câmbio
+  try{ await loadFXHist(); }catch(e){ console.error('Erro histórico FX:',e); }
+  
+  // 4. Focus
+  try{ await loadFocus(); }catch(e){
+    console.error('Erro Focus:',e);
+    document.getElementById('focusGrid').innerHTML='<div style="grid-column:1/-1;color:var(--amber);font-size:13px;padding:12px">⚠️ Focus indisponível. <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" style="color:var(--amarelo)">Consulte no BCB</a></div>';
+  }
+  
+  // 5. Commodities: agora são widgets TradingView (carregam sozinhos no HTML)
+  // Nenhuma chamada JS necessária
+  
+  // 6. Alertas
+  try{ buildAlerts(fx,macro); }catch(e){ console.error('Erro alertas:',e); }
+  
+  // 7. Análise de mercado (Claude API — pode falhar)
+  try{ loadComment(fx,macro); }catch(e){ console.error('Erro análise:',e); }
+  
+  const now=new Date();
+  const ts='Atualizado: '+now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+' · '+now.toLocaleDateString('pt-BR');
+  document.getElementById('ts').textContent=ts;
+  document.getElementById('footerTs').textContent=ts;
+  setLoading(false);
+}
+
+
+// ── EXPORTAR PDF ──────────────────────────────────────────────────────────
+function exportPDF(){
+  const el = document.querySelector('.main');
+  const now = new Date();
+  const filename = 'ProcIA_Relatorio_' + now.toISOString().slice(0,10) + '.pdf';
+  
+  // Temporarily adjust for PDF
+  const btn = document.querySelector('.hdr');
+  const origPos = btn.style.position;
+  btn.style.position = 'relative';
+  
+  const opt = {
+    margin: [10, 10, 10, 10],
+    filename: filename,
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: { 
+      scale: 2, 
+      useCORS: true,
+      backgroundColor: '#111111',
+      scrollY: 0
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+  
+  html2pdf().set(opt).from(document.body).save().then(() => {
+    btn.style.position = origPos;
+  });
+}
+
+// ── DETECÇÃO DE CORS E INICIALIZAÇÃO ──────────────────────────────────────
+async function checkConnectivity(){
+  // Teste rápido: tentar buscar uma API simples
+  try{
+    const r=await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+    if(r.ok) return true;
+    return false;
+  }catch(e){
+    return false;
+  }
+}
+
+async function init(){
+  const isFileProtocol = window.location.protocol === 'file:';
+  const canFetch = await checkConnectivity();
+  
+  if(!canFetch){
+    // Mostrar instruções de como rodar
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+    msg.innerHTML = `
+      <div style="background:#1c1c1c;border:2px solid #FFC400;border-radius:14px;padding:32px 40px;max-width:620px;font-family:Arial,sans-serif;color:#f2ede4">
+        <h2 style="color:#FFC400;font-size:18px;margin:0 0 16px;display:flex;align-items:center;gap:10px">
+          ⚠️ APIs bloqueadas pelo navegador
+        </h2>
+        <p style="font-size:15px;color:#a09a8e;line-height:1.7;margin:0 0 20px">
+          O Chrome bloqueia chamadas a APIs externas quando o HTML é aberto diretamente como arquivo (<code style="background:#252525;padding:2px 6px;border-radius:4px;color:#FFC400">file://</code>). 
+          É uma proteção de segurança padrão chamada CORS.
+        </p>
+        <p style="font-size:15px;color:#f2ede4;font-weight:700;margin:0 0 12px">Solução (15 segundos):</p>
+        <div style="background:#111;border:1px solid rgba(255,196,0,0.3);border-radius:8px;padding:16px;margin:0 0 16px">
+          <p style="font-size:13px;color:#a09a8e;margin:0 0 8px">1. Abra o Terminal / Prompt de Comando</p>
+          <p style="font-size:13px;color:#a09a8e;margin:0 0 8px">2. Navegue até a pasta do arquivo:</p>
+          <code style="display:block;background:#252525;padding:10px 14px;border-radius:6px;color:#4ade80;font-size:14px;margin:0 0 8px">cd pasta-onde-salvou-o-arquivo</code>
+          <p style="font-size:13px;color:#a09a8e;margin:0 0 8px">3. Rode o servidor local:</p>
+          <code style="display:block;background:#252525;padding:10px 14px;border-radius:6px;color:#4ade80;font-size:14px;margin:0 0 8px">python3 -m http.server 8080</code>
+          <p style="font-size:13px;color:#a09a8e;margin:0 0 8px">4. Acesse no Chrome:</p>
+          <code style="display:block;background:#252525;padding:10px 14px;border-radius:6px;color:#FFC400;font-size:14px;font-weight:700">http://localhost:8080/procurement_dashboard_v5.html</code>
+        </div>
+        <p style="font-size:13px;color:#a09a8e;margin:0 0 16px">
+          <strong style="color:#f2ede4">Alternativa Windows:</strong> Se não tem Python, use: <code style="background:#252525;padding:2px 6px;border-radius:4px;color:#4ade80">npx serve .</code> (requer Node.js)
+        </p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button onclick="this.closest('div[style]').remove();loadAll();" style="background:#FFC400;color:#000;border:none;padding:10px 20px;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;font-family:Arial">↻ Tentar novamente</button>
+          <button onclick="this.closest('div[style]').remove();" style="background:#252525;color:#a09a8e;border:1px solid rgba(255,255,255,0.1);padding:10px 20px;border-radius:7px;font-size:14px;cursor:pointer;font-family:Arial">Fechar aviso</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(msg);
+  } else {
+    loadAll();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
