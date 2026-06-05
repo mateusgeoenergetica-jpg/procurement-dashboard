@@ -213,56 +213,78 @@
   <div style="background:var(--bg3);border:1px solid rgba(255,196,0,.2);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:13px;color:var(--text2)">
     📊 <strong style="color:var(--amarelo)">Dados ao vivo:</strong> Gráficos abaixo são widgets oficiais do <strong style="color:var(--text)">TradingView</strong> com cotações em tempo real das bolsas LME, CME e ICE. Atualizados automaticamente.
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:28px">
-    <!-- Aço HRC -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
-      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">⚙️ AÇO HRC — Estruturas, tanques, tubulações · <strong style="color:var(--text2)">Fonte: CME</strong></div>
-      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"COMEX:HRC1!","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
-    </div>
-    <!-- Cobre -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
-      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🔴 COBRE — Cabeamento, motores, transformadores · <strong style="color:var(--text2)">Fonte: LME/COMEX</strong></div>
-      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"COMEX:HG1!","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
-    </div>
-    <!-- Alumínio -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
-      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">⬜ ALUMÍNIO — Trocadores de calor, estruturas leves · <strong style="color:var(--text2)">Fonte: LME</strong></div>
-      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"COMEX:ALI1!","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
-    </div>
-    <!-- Petróleo Brent -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
-      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🛢️ PETRÓLEO BRENT — Frete, logística, polímeros · <strong style="color:var(--text2)">Fonte: ICE</strong></div>
-      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:UKOIL","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
-    </div>
-    <!-- Minério de Ferro -->
-    <a href="https://tradingeconomics.com/commodity/iron-ore" target="_blank" style="text-decoration:none">
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;min-height:210px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(255,196,0,.4)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">🪨 MINÉRIO DE FERRO — Insumo base siderurgia · <strong style="color:var(--text2)">Fonte: SGX / TradingEconomics</strong></div>
-      <div style="font-size:28px;font-weight:700;color:var(--amarelo);margin-bottom:6px">Ver cotação ao vivo</div>
-      <div style="font-size:13px;color:var(--text3)">Gráfico + histórico no TradingEconomics ↗</div>
-    </div></a>
-    <!-- Zinco -->
-    <a href="https://tradingeconomics.com/commodity/zinc" target="_blank" style="text-decoration:none">
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;min-height:210px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(255,196,0,.4)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">🔩 ZINCO — Galvanização de estruturas · <strong style="color:var(--text2)">Fonte: LME / TradingEconomics</strong></div>
-      <div style="font-size:28px;font-weight:700;color:var(--amarelo);margin-bottom:6px">Ver cotação ao vivo</div>
-      <div style="font-size:13px;color:var(--text3)">Gráfico + histórico no TradingEconomics ↗</div>
-    </div></a>
-    <!-- Níquel (proxy Aço Inox) -->
-    <a href="https://tradingeconomics.com/commodity/nickel" target="_blank" style="text-decoration:none">
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;min-height:210px;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(255,196,0,.4)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">🔷 NÍQUEL (ref. Aço Inox) — Vasos, trocadores, tubos inox · <strong style="color:var(--text2)">Fonte: LME / TradingEconomics</strong></div>
-      <div style="font-size:28px;font-weight:700;color:var(--amarelo);margin-bottom:6px">Ver cotação ao vivo</div>
-      <div style="font-size:13px;color:var(--text3)">Gráfico + histórico no TradingEconomics ↗</div>
-    </div></a>
-    <!-- Baltic Dry Index (Frete Marítimo) -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
-      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🚢 BALTIC DRY INDEX — Frete marítimo global · <strong style="color:var(--text2)">Fonte: Baltic Exchange</strong></div>
-      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"INDEX:BDI","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+  <!-- Widget único TradingView Symbol Overview com abas -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+      {
+        "symbols": [
+          ["Aço HRC|Estruturas, tanques, tubulações", "COMEX:HRC1!|3M"],
+          ["Cobre|Cabeamento, motores, trafos", "COMEX:HG1!|3M"],
+          ["Alumínio|Trocadores de calor", "COMEX:ALI1!|3M"],
+          ["Brent|Frete, logística, polímeros", "TVC:UKOIL|3M"],
+          ["Baltic Dry|Frete marítimo global", "INDEX:BDI|3M"],
+          ["Ouro|Referência macro", "TVC:GOLD|3M"]
+        ],
+        "chartOnly": false,
+        "width": "100%",
+        "height": 450,
+        "locale": "br",
+        "colorTheme": "dark",
+        "autosize": false,
+        "showVolume": false,
+        "showMA": false,
+        "hideDateRanges": false,
+        "hideMarketStatus": false,
+        "hideSymbolLogo": false,
+        "scalePosition": "right",
+        "scaleMode": "Normal",
+        "fontFamily": "Arial, sans-serif",
+        "fontSize": "10",
+        "noTimeScale": false,
+        "valuesTracking": "1",
+        "changeMode": "price-and-percent",
+        "chartType": "area",
+        "gridLineColor": "rgba(255,255,255,0.04)",
+        "backgroundColor": "rgba(0,0,0,0)",
+        "lineWidth": 2,
+        "lineType": 0,
+        "dateRanges": ["1m|1D","3m|1D","6m|1W","12m|1M"]
+      }
+      </script>
     </div>
   </div>
 
-  <div class="sec">Acesso direto — TradingEconomics &amp; LME</div>
+  <!-- Cards de commodities sem widget TradingView (link direto) -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:11px;margin-bottom:28px">
+    <a href="https://tradingeconomics.com/commodity/iron-ore" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🪨 Minério de Ferro</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Insumo base siderurgia · Fonte: SGX</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+    <a href="https://tradingeconomics.com/commodity/zinc" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🔩 Zinco</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Galvanização de estruturas · Fonte: LME</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+    <a href="https://tradingeconomics.com/commodity/nickel" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🔷 Níquel (ref. Aço Inox)</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Vasos, trocadores, tubos inox · Fonte: LME</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+    <a href="https://tradingeconomics.com/commodity/steel" target="_blank" style="text-decoration:none">
+    <div class="lcard" style="min-height:90px">
+      <div class="lcard-name">🔷 Aço Inox 304</div>
+      <div style="font-size:12px;color:var(--text3);margin:4px 0">Referência para chapas e tubos inox · Fonte: TE</div>
+      <div class="lcard-open">Ver gráfico ao vivo ↗</div>
+    </div></a>
+  </div>
+
+  <div class="sec">Acesso direto  <div class="sec">Acesso direto — TradingEconomics &amp; LME</div>
   <div class="links-grid" id="linksGrid"></div>
 
   <div class="sec">Análise crítica de mercado — IA</div>
