@@ -209,23 +209,55 @@
     </div>
   </div>
 
-  <div class="sec">Commodities — Referência LME / CME</div>
+  <div class="sec">Commodities ao vivo — Gráficos TradingView (tempo real)</div>
   <div style="background:var(--bg3);border:1px solid rgba(255,196,0,.2);border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:13px;color:var(--text2)">
-    ℹ️ <strong style="color:var(--amarelo)">Fonte de dados:</strong> Cotações buscadas ao vivo via <strong style="color:var(--text)">Claude API + web search</strong> em sites como TradingEconomics, LME, Investing.com e Reuters. Se a API estiver indisponível, valores de referência são exibidos com aviso. Use os links LME/TE para conferir a cotação na fonte.
+    📊 <strong style="color:var(--amarelo)">Dados ao vivo:</strong> Gráficos abaixo são widgets oficiais do <strong style="color:var(--text)">TradingView</strong> com cotações em tempo real das bolsas LME, CME e ICE. Atualizados automaticamente.
   </div>
-  <div class="tbl-card">
-    <table>
-      <thead>
-        <tr>
-          <th>Commodity</th><th>Cotação ref.</th><th>Var. diária</th>
-          <th>Relevância CAPEX Biogás</th><th>Ver ao vivo</th>
-        </tr>
-      </thead>
-      <tbody id="commBody">
-        <tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">Carregando...</td></tr>
-      </tbody>
-    </table>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:28px">
+    <!-- Aço HRC -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">⚙️ AÇO HRC — Estruturas, tanques, tubulações · <strong style="color:var(--text2)">Fonte: CME</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"CME:HRC1!","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Cobre -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🔴 COBRE — Cabeamento, motores, transformadores · <strong style="color:var(--text2)">Fonte: LME/COMEX</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:COPPER","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Alumínio -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">⬜ ALUMÍNIO — Trocadores de calor, estruturas leves · <strong style="color:var(--text2)">Fonte: LME</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:ALUMINIUM","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Petróleo Brent -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🛢️ PETRÓLEO BRENT — Frete, logística, polímeros · <strong style="color:var(--text2)">Fonte: ICE</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:UKOIL","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Minério de Ferro -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🪨 MINÉRIO DE FERRO — Insumo base siderurgia · <strong style="color:var(--text2)">Fonte: SGX</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"SGX:FEF1!","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Zinco -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🔩 ZINCO — Galvanização de estruturas · <strong style="color:var(--text2)">Fonte: LME</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:ZINC","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Níquel (proxy Aço Inox) -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🔷 NÍQUEL (ref. Aço Inox) — Vasos, trocadores, tubos inox · <strong style="color:var(--text2)">Fonte: LME</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"TVC:NICKEL","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
+    <!-- Baltic Dry Index (Frete Marítimo) -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;padding:8px 0 0">
+      <div style="padding:0 14px 6px;font-size:12px;color:var(--text3)">🚢 BALTIC DRY INDEX — Frete marítimo global · <strong style="color:var(--text2)">Fonte: Baltic Exchange</strong></div>
+      <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>{"symbol":"INDEX:BDI","width":"100%","height":"180","locale":"br","dateRange":"3M","colorTheme":"dark","isTransparent":true}</script></div>
+    </div>
   </div>
+
+  <div class="sec">Acesso direto — TradingEconomics &amp; LME</div>
+  <div class="links-grid" id="linksGrid"></div>
 
   <div class="sec">Análise crítica de mercado — IA</div>
   <div class="mkt-card">
@@ -246,18 +278,16 @@
     <div class="alert warn"><div class="alert-title">Calculando...</div><div class="alert-body">Aguardando dados.</div></div>
   </div>
 
-  <div class="sec">Acesso direto — TradingEconomics &amp; LME</div>
-  <div class="links-grid" id="linksGrid"></div>
-
 </div>
 
 <footer class="footer">
   <p>
     <strong>Câmbio:</strong> AwesomeAPI (tempo real) ·
-    <strong>BCB SGS:</strong> Selic 432 · IPCA 433 · INPC 188 · IGP-M 189 · INCC-DI 192 · TJLP 256 (todos: acum. 12m por produto composto, mesmo método IBGE/FGV) ·
-    <strong>Focus:</strong> BCB Olinda API ·
-    <strong>Commodities:</strong> Claude API + web search (busca ao vivo em TradingEconomics, LME, Reuters, Investing.com) ·
-    <strong>Análise:</strong> Claude API + web search
+    <strong>BCB SGS:</strong> Selic 432 · IPCA 433 · INPC 188 · IGP-M 189 · INCC-DI 192 · TJLP 256 (acum. 12m por produto composto — método IBGE/FGV) ·
+    <strong>Focus:</strong> BCB Olinda API (ano corrente + próximo) ·
+    <strong>Commodities ao vivo:</strong> TradingView widgets (Aço CME, Cobre LME, Alumínio LME, Brent ICE, Ferro SGX, Zinco LME, Níquel LME, Baltic Dry Index) ·
+    <strong>Análise:</strong> Claude API + web search ·
+    <strong>Fontes oficiais:</strong> IBGE, FGV IBRE, Banco Central do Brasil, LME, CME Group, ICE, Baltic Exchange, TradingEconomics, BNDES
   </p>
   <p id="footerTs" style="color:var(--text3)">—</p>
 </footer>
@@ -451,110 +481,20 @@ async function loadFocus(){
   return {focusCY,focusNY};
 }
 
-// ── COMMODITIES — valores de referência com Brent atualizado ──────────────
-// Metadata das commodities (links e impacto fixos; preço vem da API)
-const COMMS_META={
-  'Aço HRC':       {icon:'⚙️', unit:'USD/t',  impact:'Estruturas, vasos, tubulações',   lme:'https://www.lme.com/en/metals/ferrous/steel-hrc-north-american', te:'https://tradingeconomics.com/commodity/steel'},
-  'Cobre':         {icon:'🔴', unit:'USD/t',  impact:'Cabeamento, motores, trafos',     lme:'https://www.lme.com/en/metals/non-ferrous/copper',               te:'https://tradingeconomics.com/commodity/copper'},
-  'Alumínio':      {icon:'⬜', unit:'USD/t',  impact:'Trocadores de calor, estruturas', lme:'https://www.lme.com/en/metals/non-ferrous/aluminium',            te:'https://tradingeconomics.com/commodity/aluminum'},
-  'Minério de Ferro':{icon:'🪨', unit:'USD/t',  impact:'Insumo base siderurgia',        lme:'https://www.lme.com/en/metals/ferrous/lme-steel-scrap',          te:'https://tradingeconomics.com/commodity/iron-ore'},
-  'Petróleo Brent':{icon:'🛢️',unit:'USD/bbl',impact:'Frete, logística, polímeros',    lme:'https://www.lme.com/',                                          te:'https://tradingeconomics.com/commodity/brent-crude-oil'},
-  'Zinco':         {icon:'🔩', unit:'USD/t',  impact:'Galvanização de estruturas',      lme:'https://www.lme.com/en/metals/non-ferrous/zinc',                 te:'https://tradingeconomics.com/commodity/zinc'},
-};
-
-// Dados ao vivo das commodities (preenchidos pela API)
-let COMMS=[];
-
-// Busca cotações reais via Claude API + web_search
-async function loadCommodities(){
-  document.getElementById('commBody').innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--amarelo);padding:24px">🔍 Buscando cotações ao vivo via IA + web search...</td></tr>';
-  const today=new Date().toLocaleDateString('pt-BR');
-  const prompt=`Busque na internet as cotações ATUAIS (de hoje ou do último dia útil) das seguintes commodities. Use web search para cada uma:
-
-1. Aço HRC (Hot Rolled Coil) — preço em USD/tonelada
-2. Cobre LME — preço em USD/tonelada
-3. Alumínio LME — preço em USD/tonelada
-4. Minério de Ferro (62% Fe) — preço em USD/tonelada
-5. Petróleo Brent — preço em USD/barril
-6. Zinco LME — preço em USD/tonelada
-
-IMPORTANTE: Responda SOMENTE com um JSON array, sem texto adicional, sem markdown, sem backticks. Formato exato:
-[
-  {"name":"Aço HRC","price":1234.56,"chg":0.50,"date":"02/06/2026"},
-  {"name":"Cobre","price":9500.00,"chg":-0.30,"date":"02/06/2026"},
-  {"name":"Alumínio","price":2500.00,"chg":0.10,"date":"02/06/2026"},
-  {"name":"Minério de Ferro","price":100.00,"chg":1.20,"date":"02/06/2026"},
-  {"name":"Petróleo Brent","price":93.50,"chg":-0.80,"date":"02/06/2026"},
-  {"name":"Zinco","price":2700.00,"chg":0.05,"date":"02/06/2026"}
-]
-
-Onde "chg" é a variação percentual diária. Se não encontrar a variação, coloque 0. Use SOMENTE valores reais encontrados na busca.`;
-
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user',content:prompt}],
-        tools:[{type:'web_search_20250305',name:'web_search'}]
-      })
-    });
-    const d=await res.json();
-    const txt=d.content?.map(i=>i.text||'').filter(Boolean).join('');
-    const clean=txt.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
-    if(Array.isArray(parsed)&&parsed.length>0){
-      COMMS=parsed.map(c=>{
-        const meta=COMMS_META[c.name]||{icon:'📦',unit:'USD',impact:'—',lme:'https://www.lme.com',te:'https://tradingeconomics.com'};
-        return {...meta,name:c.name,price:parseFloat(c.price),chg:parseFloat(c.chg||0),date:c.date||today};
-      });
-      renderComm();
-      return COMMS;
-    }else throw new Error('parse fail');
-  }catch(e){
-    console.warn('Commodity API error, usando fallback:',e);
-    // Fallback: valores da última busca manual verificada
-    COMMS=[
-      {name:'Aço HRC',         ...COMMS_META['Aço HRC'],        price:3060,chg:0,  date:'ref.estática'},
-      {name:'Cobre',           ...COMMS_META['Cobre'],          price:9480,chg:0,  date:'ref.estática'},
-      {name:'Alumínio',        ...COMMS_META['Alumínio'],       price:2518,chg:0,  date:'ref.estática'},
-      {name:'Minério de Ferro',...COMMS_META['Minério de Ferro'],price:786, chg:0,  date:'ref.estática'},
-      {name:'Petróleo Brent',  ...COMMS_META['Petróleo Brent'], price:93.6,chg:0,  date:'ref.estática'},
-      {name:'Zinco',           ...COMMS_META['Zinco'],          price:2680,chg:0,  date:'ref.estática'},
-    ];
-    renderComm(true);
-    return COMMS;
-  }
-}
-
-function renderComm(isFallback){
-  const note=isFallback?'<tr><td colspan="5" style="text-align:center;color:var(--amber);padding:8px;font-size:13px;background:rgba(251,191,36,.06)">⚠️ Claude API indisponível — exibindo valores de referência. Clique nos links LME/TE para cotação ao vivo.</td></tr>':'';
-  document.getElementById('commBody').innerHTML=note+COMMS.map(c=>{
-    const d=c.chg>0.5?'up':c.chg<-0.5?'dn':'flat';
-    return `<tr>
-      <td><strong>${c.icon} ${c.name}</strong></td>
-      <td>${c.price.toFixed(2)}<span style="font-size:13px;color:var(--text3);margin-left:4px">${c.unit}</span> <span style="font-size:11px;color:var(--text3)">${c.date||''}</span></td>
-      <td><span class="badge ${d}">${arr(d)} ${pct(c.chg)}</span></td>
-      <td style="font-size:14px;color:var(--text3)">${c.impact}</td>
-      <td>
-        <a href="${c.lme}" target="_blank" class="ext-btn">LME ↗</a>
-        <a href="${c.te}"  target="_blank" class="ext-btn">TE ↗</a>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
 function renderLinks(){
   const links=[
-    {n:'🔴 Cobre — LME',    u:'https://www.lme.com/en/metals/non-ferrous/copper'},
-    {n:'⬜ Alumínio — LME', u:'https://www.lme.com/en/metals/non-ferrous/aluminium'},
-    {n:'⚙️ Aço HRC — LME', u:'https://www.lme.com/en/metals/ferrous/steel-hrc-north-american'},
-    {n:'🔩 Zinco — LME',    u:'https://www.lme.com/en/metals/non-ferrous/zinc'},
-    {n:'🛢️ Brent — TE',    u:'https://tradingeconomics.com/commodity/brent-crude-oil'},
-    {n:'📊 IPCA — BCB',     u:'https://www.bcb.gov.br/estatisticas/mercadoaborto'},
-    {n:'📋 Focus — BCB',    u:'https://www.bcb.gov.br/publicacoes/focus'},
-    {n:'🏗️ INCC — FGV',    u:'https://portalibre.fgv.br/estudos-e-pesquisas/indices-de-preco/igp'},
+    {n:'⚙️ Aço HRC — CME',    u:'https://tradingeconomics.com/commodity/steel'},
+    {n:'🔴 Cobre — LME',       u:'https://www.lme.com/en/metals/non-ferrous/copper'},
+    {n:'⬜ Alumínio — LME',    u:'https://www.lme.com/en/metals/non-ferrous/aluminium'},
+    {n:'🔷 Níquel (Inox) — LME',u:'https://www.lme.com/en/metals/non-ferrous/nickel'},
+    {n:'🔩 Zinco — LME',       u:'https://www.lme.com/en/metals/non-ferrous/zinc'},
+    {n:'🪨 Ferro — TE',        u:'https://tradingeconomics.com/commodity/iron-ore'},
+    {n:'🛢️ Brent — TE',       u:'https://tradingeconomics.com/commodity/brent-crude-oil'},
+    {n:'🚢 Baltic Dry — TE',   u:'https://tradingeconomics.com/commodity/baltic-dry'},
+    {n:'📊 IPCA — BCB',        u:'https://www.bcb.gov.br/controleinflacao/indicepreco'},
+    {n:'📋 Focus — BCB',       u:'https://www.bcb.gov.br/publicacoes/focus'},
+    {n:'🏗️ INCC — FGV',       u:'https://portalibre.fgv.br/estudos-e-pesquisas/indices-de-preco/igp'},
+    {n:'🏦 TJLP — BNDES',      u:'https://www.bndes.gov.br/wps/portal/site/home/financiamento/guia/custos-financeiros/tlp-taxa-de-longo-prazo'},
   ];
   document.getElementById('linksGrid').innerHTML=links.map(l=>
     `<a href="${l.u}" target="_blank"><div class="lcard"><div class="lcard-name">${l.n}</div><div class="lcard-open">Abrir ↗</div></div></a>`
@@ -578,11 +518,6 @@ function buildAlerts(fx,macro){
     else if(macro.igpm!==null&&macro.igpm>4) al.push({t:'warn',title:'🟡 IGP-M acima da meta',body:`IGP-M 12m em ${macro.igpm.toFixed(2)}%. Antecipar renegociações de contratos long-term com reajuste anual.`});
     if(macro.selic!==null&&macro.selic>13) al.push({t:'warn',title:'🟡 Selic alta — custo de capital elevado',body:`Selic em ${macro.selic.toFixed(2)}% a.a. Financiamento de CAPEX oneroso. Avaliar BNDES ou leasing operacional para grandes equipamentos.`});
   }
-  const brent=COMMS.find(c=>c.name==='Petróleo Brent');
-  if(brent&&brent.chg>2) al.push({t:'warn',title:'🟡 Brent em alta — pressão em frete e logística',body:`Brent +${pct(brent.chg)} hoje (USD ${brent.price.toFixed(2)}/bbl). Pressão sobre frete marítimo, polímeros e custos operacionais.`});
-  else if(brent&&brent.price>90) al.push({t:'warn',title:'🟡 Brent acima de USD 90 — custo logístico elevado',body:`Brent em USD ${brent.price.toFixed(2)}/bbl. Patamar de preço sustenta pressão sobre frete e polímeros. Monitorar cláusulas de combustível em contratos de transporte.`});
-  const cobreC=COMMS.find(c=>c.name==='Cobre');
-  if(cobreC&&cobreC.chg>1.5) al.push({t:'warn',title:'🟡 Cobre em alta — cabeamento e motores',body:`Cobre +${pct(cobreC.chg)} hoje (USD ${cobreC.price.toFixed(0)}/t). Impacto direto em motores, transformadores e cabeamento elétrico do parque de biogás.`});
   if(macro?.tlp!==null&&macro?.tlp>8) al.push({t:'warn',title:'🟡 TJLP BNDES elevada',body:`TJLP em ${macro.tlp.toFixed(2)}% a.a. Custo de financiamento BNDES alto. Avaliar alternativas: leasing, debêntures incentivadas ou capital próprio para projetos CAPEX.`});
   document.getElementById('alertsBox').innerHTML=al.map(a=>
     `<div class="alert ${a.t}"><div class="alert-title">${a.title}</div><div class="alert-body">${a.body}</div></div>`
@@ -592,9 +527,6 @@ function buildAlerts(fx,macro){
 // ── ANÁLISE DE MERCADO (Claude API) ───────────────────────────────────────
 async function loadComment(fx,macro){
   document.getElementById('mktDate').textContent='Gerando análise com IA + web search...';
-  const brent=COMMS.find(c=>c.name==='Petróleo Brent');
-  const cobre=COMMS.find(c=>c.name==='Cobre');
-  const aco=COMMS.find(c=>c.name&&c.name.includes('Aço'));
   const ctx={
     date:new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}),
     usdBrl:fx?'R$ '+f2(fx.uB)+' ('+pct(fx.uP)+' hoje)':'N/D',
@@ -603,27 +535,23 @@ async function loadComment(fx,macro){
     ipca12m:macro?.ipca?macro.ipca.toFixed(2)+'%':'N/D',
     igpm12m:macro?.igpm?macro.igpm.toFixed(2)+'%':'N/D',
     incc12m:macro?.incc?macro.incc.toFixed(2)+'%':'N/D',
-    brent:brent?brent.price.toFixed(2)+' USD/bbl ('+pct(brent.chg)+')':'N/D',
-    cobre:cobre?cobre.price.toFixed(0)+' USD/t ('+pct(cobre.chg)+')':'N/D',
-    aco:aco?aco.price.toFixed(0)+' USD/t ('+pct(aco.chg)+')':'N/D',
   };
-  const prompt=`Você é analista especialista em procurement industrial para o setor de biogás e energia renovável no Brasil.
+  const prompt=`Você é analista especialista em procurement industrial para o setor de biogás e energia renovável no Brasil. Use web search para buscar dados atuais de commodities.
 
-Dados atuais (${ctx.date}):
+Dados macro atuais (${ctx.date}):
 - USD/BRL: ${ctx.usdBrl}
 - EUR/BRL: ${ctx.eurBrl}
 - Selic: ${ctx.selic}
 - IPCA 12m: ${ctx.ipca12m}
 - IGP-M 12m: ${ctx.igpm12m}
 - INCC 12m: ${ctx.incc12m}
-- Petróleo Brent: ${ctx.brent}
-- Cobre LME: ${ctx.cobre}
-- Aço HRC: ${ctx.aco}
+
+Busque na web os preços atuais de: Petróleo Brent, Cobre LME, Aço HRC, Alumínio LME, Níquel (ref. inox), Baltic Dry Index.
 
 Escreva um comentário crítico e objetivo de 4 parágrafos curtos em HTML (somente tags <p> e <strong>) sobre:
-1. Cenário geopolítico atual (conflito EUA-Irã, tarifas Trump, crise Estreito de Ormuz) e impacto em commodities
-2. Impacto no câmbio e insumos para procurement industrial brasileiro
-3. Perspectivas de reajuste de equipamentos e materiais (aço, cobre, alumínio, Brent)
+1. Cenário geopolítico atual e impacto em commodities metálicas e energia
+2. Impacto no câmbio e insumos para procurement industrial brasileiro (foco em construção civil, aço, aço inox, mão de obra)
+3. Perspectivas de reajuste de equipamentos e materiais + frete marítimo (Baltic Dry Index)
 4. Recomendação estratégica de procurement para os próximos 30-60 dias
 
 Seja direto e técnico. Comece com a análise, sem introduções genéricas.`;
@@ -688,11 +616,8 @@ async function loadAll(){
     document.getElementById('focusGrid').innerHTML='<div style="grid-column:1/-1;color:var(--amber);font-size:13px;padding:12px">⚠️ Focus indisponível. <a href="https://www.bcb.gov.br/publicacoes/focus" target="_blank" style="color:var(--amarelo)">Consulte no BCB</a></div>';
   }
   
-  // 5. Commodities (Claude API — pode falhar fora do claude.ai)
-  try{ await loadCommodities(); }catch(e){
-    console.error('Erro commodities:',e);
-    document.getElementById('commBody').innerHTML='<tr><td colspan="5" style="color:var(--amber);padding:16px;font-size:14px">⚠️ Erro ao buscar commodities. Use os links LME/TE abaixo para cotações ao vivo.</td></tr>';
-  }
+  // 5. Commodities: agora são widgets TradingView (carregam sozinhos no HTML)
+  // Nenhuma chamada JS necessária
   
   // 6. Alertas
   try{ buildAlerts(fx,macro); }catch(e){ console.error('Erro alertas:',e); }
