@@ -113,18 +113,6 @@
   /* COMMODITIES */
   .tv-widget { border-radius:6px; overflow:hidden; }
 
-  /* AI ANALYSIS */
-  .ai-area { background:var(--card); border:1px solid var(--borda); border-radius:8px; padding:1.25rem; }
-  .ai-prompt-row { display:flex; gap:0.5rem; margin-bottom:0.75rem; }
-  .ai-input { flex:1; background:#111; border:1px solid var(--borda); border-radius:4px;
-    padding:0.55rem 0.8rem; color:var(--texto); font-size:0.85rem; outline:none; }
-  .ai-input:focus { border-color:var(--amarelo); }
-  .ai-output { background:#111; border:1px solid var(--borda); border-radius:6px;
-    padding:1rem; font-size:0.83rem; line-height:1.6; min-height:100px;
-    color:var(--texto); white-space:pre-wrap; max-height:360px; overflow-y:auto; }
-  .ai-output .thinking { color:var(--texto-sec); font-style:italic; }
-  .source-tag { font-size:0.65rem; color:#60a5fa; background:rgba(96,165,250,0.1);
-    padding:2px 6px; border-radius:3px; display:inline-block; margin-top:0.3rem; }
 
   /* SPINNER */
   .spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,196,0,0.3);
@@ -164,7 +152,6 @@
       <a onclick="scrollTo('sec-indices')" class="sidebar-link"><span class="icon">📈</span> Índices BCB</a>
       <a onclick="scrollTo('sec-focus')" class="sidebar-link"><span class="icon">🔭</span> Focus BCB</a>
       <a onclick="scrollTo('sec-commodities')" class="sidebar-link"><span class="icon">🛢️</span> Commodities</a>
-      <a onclick="scrollTo('sec-ia')" class="sidebar-link"><span class="icon">🤖</span> Análise IA</a>
     </div>
   </nav>
 
@@ -339,22 +326,7 @@
       </div>
     </div>
 
-    <hr class="divider" id="sec-ia">
-
-    <!-- AI ANALYSIS -->
-    <div class="section-title">Análise de Mercado — Claude AI</div>
-    <div class="section-sub">Utilize IA + web search para análises customizadas de mercado, benchmarks e tendências</div>
-
-    <div class="ai-area">
-      <div class="ai-prompt-row">
-        <input type="text" class="ai-input" id="ai-prompt"
-          placeholder="Ex: Analisar tendência do preço do aço para CAPEX de plantas de biogás em 2025…"
-          onkeydown="if(event.key==='Enter') runAI()">
-        <button class="btn btn-yellow" onclick="runAI()" id="ai-btn">🤖 Analisar</button>
-      </div>
-      <div class="ai-output" id="ai-output"><span class="thinking">Digite uma pergunta e pressione Analisar para iniciar.</span></div>
-    </div>
-
+    
   </main>
 </div>
 
@@ -500,43 +472,6 @@ async function loadFocus() {
   }
 }
 
-// ── AI ANALYSIS ──
-async function runAI() {
-  const prompt = document.getElementById('ai-prompt').value.trim();
-  if (!prompt) return;
-  const out = document.getElementById('ai-output');
-  const btn = document.getElementById('ai-btn');
-  out.innerHTML = '<span class="thinking"><span class="spin"></span> Analisando com Claude AI + web search…</span>';
-  btn.disabled = true;
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `Você é um especialista em procurement e supply chain para o setor de biogás e energia renovável no Brasil. Empresa: GeoMit.
-Responda em português do Brasil. Seja técnico, direto e use dados quando disponíveis.
-Foque em: custos, commodities, CAPEX, fornecedores, tendências de mercado, índices econômicos.
-Use bullet points quando listar itens. Limite: 400 palavras.`,
-        messages: [{ role: 'user', content: prompt }],
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }]
-      })
-    });
-    const data = await resp.json();
-    const text = data.content
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('\n');
-    out.innerHTML = (text || 'Sem resposta.').replace(/\n/g, '<br>');
-    out.innerHTML += '<br><br><span class="source-tag">🤖 Claude AI + Web Search</span>';
-  } catch(e) {
-    out.textContent = 'Erro ao conectar com Claude API: ' + e.message;
-  } finally {
-    btn.disabled = false;
-  }
-}
 
 // ── EXPORT PDF ──
 function exportPDF() {
