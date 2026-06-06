@@ -131,7 +131,11 @@
   </div>
   <div class="header-right">
     <span class="breadcrumb"><a href="index.html">ProcIA</a> <span>›</span> Dashboard</span>
-    <button class="btn btn-yellow" onclick="exportPDF()">⬇ Exportar PDF</button>
+    <button class="btn btn-yellow" onclick="exportPDF()" data-pt="⬇ Exportar PDF" data-en="⬇ Export PDF">⬇ Exportar PDF</button>
+    <div style="display:flex;gap:4px;margin-left:6px;">
+      <button onclick="setLang('pt')" id="btn-pt" style="background:var(--amarelo);color:#000;border:none;padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">PT</button>
+      <button onclick="setLang('en')" id="btn-en" style="background:rgba(255,255,255,0.1);color:#aaa;border:1px solid #333;padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">EN</button>
+    </div>
   </div>
 </header>
 
@@ -160,16 +164,16 @@
 
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;">
       <div>
-        <div class="page-title">Dashboard de Indicadores</div>
-        <div class="page-subtitle">Câmbio, inflação, projeções BCB e análise de mercado para procurement de biogás</div>
+        <div class="page-title" data-pt="Dashboard de Indicadores" data-en="Indicators Dashboard">Dashboard de Indicadores</div>
+        <div class="page-subtitle" data-pt="Câmbio, inflação, projeções BCB e análise de mercado para procurement de biogás" data-en="Exchange rates, inflation, BCB projections and market analysis for biogas procurement">Câmbio, inflação, projeções BCB e análise de mercado para procurement de biogás</div>
       </div>
       <div class="update-time" id="update-time">Atualizando…</div>
     </div>
 
     <!-- KPI STRIP: CAMBIO -->
     <div id="sec-cambio">
-      <div class="section-title">Câmbio ao Vivo</div>
-      <div class="section-sub">Fonte: AwesomeAPI • Atualização em tempo real</div>
+      <div class="section-title" data-pt="Câmbio ao Vivo" data-en="Live Exchange Rates">Câmbio ao Vivo</div>
+      <div class="section-sub" data-pt="Fonte: AwesomeAPI • Atualização em tempo real" data-en="Source: AwesomeAPI • Real-time update">Fonte: AwesomeAPI • Atualização em tempo real</div>
       <div class="grid-4">
         <div class="kcard">
           <div class="kcard-label">USD / BRL</div>
@@ -208,8 +212,8 @@
     <hr class="divider" id="sec-indices">
 
     <!-- INDICES BCB -->
-    <div class="section-title">Índices Econômicos — BCB SGS</div>
-    <div class="section-sub">Acumulado 12 meses • Série histórica oficial Banco Central do Brasil</div>
+    <div class="section-title" data-pt="Índices Econômicos — BCB SGS" data-en="Economic Indices — BCB SGS">Índices Econômicos — BCB SGS</div>
+    <div class="section-sub" data-pt="Acumulado 12 meses • Série histórica oficial Banco Central do Brasil" data-en="12-month accumulated • Official Central Bank of Brazil historical series">Acumulado 12 meses • Série histórica oficial Banco Central do Brasil</div>
 
     <div class="chart-card" style="margin-bottom:1.5rem;">
       <table class="indices" id="indices-table">
@@ -272,8 +276,8 @@
     <hr class="divider" id="sec-focus">
 
     <!-- FOCUS BCB -->
-    <div class="section-title">Projeções Focus — Banco Central</div>
-    <div class="section-sub">Mediana das expectativas do mercado • Top 500 instituições • Fonte: BCB Olinda</div>
+    <div class="section-title" data-pt="Projeções Focus — Banco Central" data-en="Focus Projections — Central Bank">Projeções Focus — Banco Central</div>
+    <div class="section-sub" data-pt="Mediana das expectativas do mercado • Top 500 instituições • Fonte: BCB Olinda" data-en="Market expectations median • Top 500 institutions • Source: BCB Olinda">Mediana das expectativas do mercado • Top 500 instituições • Fonte: BCB Olinda</div>
 
     <div class="chart-card" style="margin-bottom:1.5rem;">
       <div class="focus-grid" id="focus-grid">
@@ -286,7 +290,7 @@
     <hr class="divider" id="sec-commodities">
 
     <!-- COMMODITIES -->
-    <div class="section-title">Commodities — Referência CAPEX</div>
+    <div class="section-title" data-pt="Commodities — Referência CAPEX" data-en="Commodities — CAPEX Reference">Commodities — Referência CAPEX</div>
     <div class="section-sub">Petróleo Brent e Baltic Dry Index via TradingView • Outros via TradingEconomics</div>
 
     <div class="grid-2" style="margin-bottom:1rem;">
@@ -314,7 +318,7 @@
 
     <!-- Commodities links diretos -->
     <div class="chart-card" style="margin-bottom:1.5rem;">
-      <div class="section-title" style="margin-bottom:0.75rem;">Links Diretos — Aço, Cobre, Alumínio e outros</div>
+      <div class="section-title" style="margin-bottom:0.75rem;" data-pt="Links Diretos — Aço, Cobre, Alumínio e outros" data-en="Direct Links — Steel, Copper, Aluminum and others">Links Diretos — Aço, Cobre, Alumínio e outros</div>
       <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
         <a href="https://tradingeconomics.com/commodity/steel" target="_blank" class="btn btn-ghost">🔩 Aço HRC</a>
         <a href="https://tradingeconomics.com/commodity/copper" target="_blank" class="btn btn-ghost">🟤 Cobre</a>
@@ -344,9 +348,16 @@ function setUpdateTime() {
 }
 
 // ── CAMBIO ──
-async function loadCambio() {
+async function fetchWithTimeout(url, ms=8000) {
+    const ctrl = new AbortController();
+    const id = setTimeout(() => ctrl.abort(), ms);
+    try { const r = await fetch(url, {signal: ctrl.signal}); clearTimeout(id); return r; }
+    catch(e) { clearTimeout(id); throw e; }
+  }
+
+  async function loadCambio() {
   try {
-    const r = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,GBP-BRL');
+    const r = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,GBP-BRL');
     const d = await r.json();
     const pairs = [
       {key:'USDBRL', prefix:'usd', label:'Dólar Americano'},
@@ -373,7 +384,7 @@ async function loadCambio() {
 // ── CAMBIO CHART (7 dias) ──
 async function loadCambioChart() {
   try {
-    const r = await fetch('https://economia.awesomeapi.com.br/json/daily/USD-BRL/7');
+    const r = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/daily/USD-BRL/7');
     const data = await r.json();
     const labels = data.map(d => {
       const dt = new Date(d.timestamp * 1000);
@@ -428,7 +439,7 @@ async function loadIndices() {
   ];
   for (const s of series) {
     try {
-      const r = await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
+      const r = await fetchWithTimeout(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
       const d = await r.json();
       const el = document.getElementById(s.id);
       if (el) el.textContent = parseFloat(d[0].valor).toFixed(2) + '%';
@@ -498,6 +509,23 @@ function exportPDF() {
   setUpdateTime();
   setInterval(loadCambio, 60000);
 })();
+
+  // ── LANGUAGE TOGGLE ──
+  function setLang(lang) {
+    localStorage.setItem('proCIA-lang', lang);
+    const btnPt = document.getElementById('btn-pt');
+    const btnEn = document.getElementById('btn-en');
+    if (btnPt) { btnPt.style.background = lang==='pt'?'var(--amarelo)':'rgba(255,255,255,0.1)'; btnPt.style.color=lang==='pt'?'#000':'#aaa'; btnPt.style.border=lang==='pt'?'none':'1px solid #333'; }
+    if (btnEn) { btnEn.style.background = lang==='en'?'var(--amarelo)':'rgba(255,255,255,0.1)'; btnEn.style.color=lang==='en'?'#000':'#aaa'; btnEn.style.border=lang==='en'?'none':'1px solid #333'; }
+    document.querySelectorAll('[data-pt]').forEach(el => {
+      if (el.tagName === 'BUTTON' || el.tagName === 'A') {
+        el.textContent = lang==='en' ? (el.dataset.en||el.dataset.pt) : el.dataset.pt;
+      } else {
+        el.textContent = lang==='en' ? (el.dataset.en||el.dataset.pt) : el.dataset.pt;
+      }
+    });
+  }
+  (function(){ setLang(localStorage.getItem('proCIA-lang')||'pt'); })();
 </script>
 </body>
 </html>

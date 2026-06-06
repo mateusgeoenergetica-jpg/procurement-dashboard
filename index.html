@@ -362,26 +362,28 @@
   </div>
   <div class="header-right">
     <span class="header-badge">ProcIA</span>
-    <span class="header-user">Procurement &amp; Supply Chain</span>
+    <span class="header-user" id="header-user-text">Procurement &amp; Supply Chain</span>
+    <div style="display:flex;gap:4px;margin-left:8px;">
+      <button onclick="setLang('pt')" id="btn-pt" style="background:var(--amarelo);color:#000;border:none;padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">PT</button>
+      <button onclick="setLang('en')" id="btn-en" style="background:rgba(255,255,255,0.1);color:#aaa;border:1px solid #333;padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">EN</button>
+    </div>
   </div>
 </header>
 
 <section class="hero">
-  <div class="hero-eyebrow">Portal de Procurement</div>
+  <div class="hero-eyebrow" data-pt="Portal de Procurement" data-en="Procurement Portal">Portal de Procurement</div>
   <h1>ProcIA — <span>Inteligência</span><br>em Compras Estratégicas</h1>
-  <p class="hero-sub">Plataforma integrada de gestão de fornecedores, análise de mercado, indicadores econômicos e suporte à decisão para o setor de biogás.</p>
+  <p class="hero-sub" data-pt="Plataforma integrada de gestão de fornecedores, análise de mercado, indicadores econômicos e suporte à decisão para o setor de biogás." data-en="Integrated platform for supplier management, market analysis, economic indicators and decision support for the biogas sector.">Plataforma integrada de gestão de fornecedores, análise de mercado, indicadores econômicos e suporte à decisão para o setor de biogás.</p>
   <div class="hero-actions">
-    <a href="dashboard.html" class="btn-primary">📊 Acessar Dashboard</a>
-    <a href="vendor-list.html" class="btn-outline">🏭 Fornecedores</a>
-    <a href="cadastro.html" class="btn-outline">➕ Novo Fornecedor</a>
+    <a href="dashboard.html" class="btn-primary" data-pt="📊 Acessar Dashboard" data-en="📊 Open Dashboard">📊 Acessar Dashboard</a>
   </div>
 </section>
 
 <div class="kpi-strip">
   <div class="kpi-item">
-    <div class="kpi-label">Fornecedores Ativos</div>
+    <div class="kpi-label" data-pt="Fornecedores Ativos" data-en="Active Suppliers">Fornecedores Ativos</div>
     <div class="kpi-value amarelo">—</div>
-    <div class="kpi-delta">Acesse a lista</div>
+    <div class="kpi-delta" data-pt="Acesse a lista" data-en="View list">Acesse a lista</div>
   </div>
   <div class="kpi-item">
     <div class="kpi-label">Selic (12m)</div>
@@ -411,8 +413,8 @@
     <div class="card-accent"></div>
     <div class="card-body">
       <div class="card-icon">📊</div>
-      <div class="card-title">Dashboard de Indicadores</div>
-      <div class="card-desc">Câmbio ao vivo, índices de inflação (Selic, IPCA, INCC, IGP-M, INPC, TJLP), commodities e projeções Focus do BCB. Exportação em PDF.</div>
+      <div class="card-title" data-pt="Dashboard de Indicadores" data-en="Indicators Dashboard">Dashboard de Indicadores</div>
+      <div class="card-desc" data-pt="Câmbio ao vivo, índices de inflação (Selic, IPCA, INCC, IGP-M, INPC, TJLP), commodities e projeções Focus do BCB. Exportação em PDF." data-en="Live exchange rates, inflation indices (Selic, IPCA, INCC, IGP-M, INPC, TJLP), commodities and BCB Focus projections. PDF export.">Câmbio ao vivo, índices de inflação (Selic, IPCA, INCC, IGP-M, INPC, TJLP), commodities e projeções Focus do BCB. Exportação em PDF.</div>
       <span class="card-tag">Disponível</span>
     </div>
   </a>
@@ -421,8 +423,8 @@
     <div class="card-accent"></div>
     <div class="card-body">
       <div class="card-icon">🏭</div>
-      <div class="card-title">Gestão de Fornecedores</div>
-      <div class="card-desc">Cadastro, homologação e acompanhamento de fornecedores. Filtros por categoria, segmento e status de qualificação.</div>
+      <div class="card-title" data-pt="Gestão de Fornecedores" data-en="Supplier Management">Gestão de Fornecedores</div>
+      <div class="card-desc" data-pt="Cadastro, homologação e acompanhamento de fornecedores. Filtros por categoria, segmento e status de qualificação." data-en="Supplier registration, qualification and tracking. Filters by category, segment and qualification status.">Cadastro, homologação e acompanhamento de fornecedores. Filtros por categoria, segmento e status de qualificação.</div>
       <span class="card-tag">Disponível</span>
     </div>
   </a>
@@ -431,8 +433,8 @@
     <div class="card-accent"></div>
     <div class="card-body">
       <div class="card-icon">➕</div>
-      <div class="card-title">Cadastro de Fornecedor</div>
-      <div class="card-desc">Formulário completo para registro de novos fornecedores com dados fiscais, contatos, categorias e documentação.</div>
+      <div class="card-title" data-pt="Cadastro de Fornecedor" data-en="Supplier Registration">Cadastro de Fornecedor</div>
+      <div class="card-desc" data-pt="Formulário completo para registro de novos fornecedores com dados fiscais, contatos, categorias e documentação." data-en="Complete form for new supplier registration with tax data, contacts, categories and documentation.">Formulário completo para registro de novos fornecedores com dados fiscais, contatos, categorias e documentação.</div>
       <span class="card-tag soon">Em desenvolvimento</span>
     </div>
   </a>
@@ -441,9 +443,9 @@
     <div class="card-accent" style="background: var(--cinza-borda);"></div>
     <div class="card-body">
       <div class="card-icon" style="background: rgba(255,255,255,0.05);">🤖</div>
-      <div class="card-title">Análise de Mercado IA</div>
-      <div class="card-desc">Relatórios de análise de mercado com Claude AI + web search. Insights sobre biogás, CAPEX e tendências de supply chain.</div>
-      <span class="card-tag">No Dashboard</span>
+      <div class="card-title" data-pt="Análise de Mercado IA" data-en="AI Market Analysis">Análise de Mercado IA</div>
+      <div class="card-desc" data-pt="Módulo de análise com IA em desenvolvimento. Em breve para a equipe GeoMit." data-en="AI-powered analysis module under development. Coming soon for GeoMit team.">Módulo de análise com IA em desenvolvimento. Em breve para a equipe GeoMit.</div>
+      <span class="card-tag soon" data-pt="🔧 Em Construção" data-en="🔧 Coming Soon">🔧 Em Construção</span>
     </div>
   </div>
 
@@ -484,10 +486,16 @@
 </footer>
 
 <script>
-async function fetchKPIs() {
+async function fetchWithTimeout(url, ms=8000) {
+    const ctrl = new AbortController();
+    const id = setTimeout(() => ctrl.abort(), ms);
+    try { const r = await fetch(url, {signal: ctrl.signal}); clearTimeout(id); return r; }
+    catch(e) { clearTimeout(id); throw e; }
+  }
+  async function fetchKPIs() {
   // USD/BRL via AwesomeAPI
   try {
-    const r = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+    const r = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/USD-BRL');
     const d = await r.json();
     const v = parseFloat(d.USDBRL.bid).toFixed(2);
     document.getElementById('usd-kpi').textContent = 'R$ ' + v;
@@ -505,15 +513,70 @@ async function fetchKPIs() {
   ];
   for (const s of series) {
     try {
-      const r = await fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
+      const r = await fetchWithTimeout(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
       const d = await r.json();
       const v = parseFloat(d[0].valor).toFixed(2);
       document.getElementById(s.id).textContent = v + '%';
       document.getElementById(s.delta).textContent = s.label;
-    } catch(e) { document.getElementById(s.id).textContent = 'N/D'; }
+    } catch(e) {
+      const el = document.getElementById(s.id);
+      if (el) el.textContent = '—';
+      const del = document.getElementById(s.delta);
+      if (del) del.textContent = 'ver dashboard';
+    }
   }
 }
 fetchKPIs();
+
+  // ── LANGUAGE TOGGLE ──
+  const i18n = {
+    pt: {
+      'hero-eyebrow': 'Portal de Procurement',
+      'hero-title-1': 'ProcIA — ',
+      'hero-title-span': 'Inteligência',
+      'hero-title-2': 'em Compras Estratégicas',
+      'hero-sub': 'Plataforma integrada de gestão de fornecedores, análise de mercado, indicadores econômicos e suporte à decisão para o setor de biogás.',
+      'header-user': 'Procurement & Supply Chain',
+      'kpi-vendors': 'Fornecedores Ativos',
+      'kpi-access': 'Acesse a lista',
+      'footer-text': '© 2025 GeoMit — Plataforma ProcIA | Procurement & Supply Chain',
+    },
+    en: {
+      'hero-eyebrow': 'Procurement Portal',
+      'hero-title-1': 'ProcIA — ',
+      'hero-title-span': 'Intelligence',
+      'hero-title-2': 'in Strategic Sourcing',
+      'hero-sub': 'Integrated platform for supplier management, market analysis, economic indicators and decision support for the biogas sector.',
+      'header-user': 'Procurement & Supply Chain',
+      'kpi-vendors': 'Active Suppliers',
+      'kpi-access': 'View list',
+      'footer-text': '© 2025 GeoMit — ProcIA Platform | Procurement & Supply Chain',
+    }
+  };
+
+  function setLang(lang) {
+    localStorage.setItem('proCIA-lang', lang);
+    // Toggle buttons
+    document.getElementById('btn-pt').style.background = lang==='pt' ? 'var(--amarelo)' : 'rgba(255,255,255,0.1)';
+    document.getElementById('btn-pt').style.color = lang==='pt' ? '#000' : '#aaa';
+    document.getElementById('btn-pt').style.border = lang==='pt' ? 'none' : '1px solid #333';
+    document.getElementById('btn-en').style.background = lang==='en' ? 'var(--amarelo)' : 'rgba(255,255,255,0.1)';
+    document.getElementById('btn-en').style.color = lang==='en' ? '#000' : '#aaa';
+    document.getElementById('btn-en').style.border = lang==='en' ? 'none' : '1px solid #333';
+    // Translate all data-pt/data-en elements
+    document.querySelectorAll('[data-pt]').forEach(el => {
+      el.textContent = lang === 'en' ? (el.dataset.en || el.dataset.pt) : el.dataset.pt;
+    });
+    // Dashboard link
+    const dashBtn = document.querySelector('[data-pt="📊 Acessar Dashboard"]');
+    if (dashBtn) dashBtn.textContent = lang === 'en' ? '📊 Open Dashboard' : '📊 Acessar Dashboard';
+  }
+
+  // Init language
+  (function() {
+    const saved = localStorage.getItem('proCIA-lang') || 'pt';
+    setLang(saved);
+  })();
 </script>
 </body>
 </html>
