@@ -9,118 +9,94 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
   :root {
-    --amarelo: #FFC400;
-    --preto: #000000;
-    --bege: #EEE1CD;
-    --branco: #FFFFFF;
-    --bg: #0f0f0f;
-    --card: #1a1a1a;
-    --borda: #2a2a2a;
-    --texto: #f0f0f0;
-    --texto-sec: #999999;
+    --amarelo:#FFC400;--preto:#000;--bg:#0f0f0f;--card:#1a1a1a;--borda:#2a2a2a;
+    --texto:#f0f0f0;--sec:#999;--verde:#4ade80;--vermelho:#f87171;--azul:#60a5fa;
   }
-  * { margin:0;padding:0;box-sizing:border-box; }
-  body { font-family:'DM Sans','Segoe UI',sans-serif; background:var(--bg); color:var(--texto); }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans','Segoe UI',sans-serif;background:var(--bg);color:var(--texto);}
 
-  header {
-    background:var(--preto); border-bottom:2px solid var(--amarelo);
-    padding:0 2rem; height:60px;
-    display:flex; align-items:center; justify-content:space-between;
-    position:sticky; top:0; z-index:100;
-  }
-  .logo-wrap img { height:28px; filter:invert(1) brightness(2); }
-  .header-right { display:flex; align-items:center; gap:0.75rem; }
-  .breadcrumb { font-size:0.78rem; color:var(--texto-sec); }
-  .breadcrumb a { color:var(--amarelo); text-decoration:none; }
-  .breadcrumb span { color:var(--texto-sec); }
+  /* HEADER */
+  header{background:var(--preto);border-bottom:2px solid var(--amarelo);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo-wrap img{height:28px;filter:invert(1) brightness(2);}
+  .hdr-right{display:flex;align-items:center;gap:0.75rem;}
+  .bc{font-size:.78rem;color:var(--sec);} .bc a{color:var(--amarelo);text-decoration:none;}
+  .btn{border:none;padding:.5rem 1rem;font-size:.8rem;font-weight:600;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;transition:opacity .15s;}
+  .btn-y{background:var(--amarelo);color:var(--preto);} .btn-y:hover{opacity:.85;}
+  .btn-g{background:rgba(255,255,255,.07);color:var(--texto);border:1px solid var(--borda);} .btn-g:hover{border-color:var(--amarelo);}
+  .lang-wrap{display:flex;gap:3px;}
+  .lang-btn{padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #333;background:rgba(255,255,255,.1);color:#aaa;}
+  .lang-btn.on{background:var(--amarelo);color:#000;border:none;}
 
-  .btn { border:none; padding:0.5rem 1rem; font-size:0.8rem; font-weight:600;
-    border-radius:4px; cursor:pointer; text-decoration:none; display:inline-flex;
-    align-items:center; gap:0.35rem; transition:opacity 0.15s; }
-  .btn-yellow { background:var(--amarelo); color:var(--preto); }
-  .btn-yellow:hover { opacity:0.85; }
-  .btn-ghost { background:rgba(255,255,255,0.07); color:var(--texto); border:1px solid var(--borda); }
-  .btn-ghost:hover { border-color:var(--amarelo); }
+  /* LAYOUT */
+  .layout{display:flex;min-height:calc(100vh - 60px);}
+  .sidebar{width:210px;background:var(--preto);border-right:1px solid var(--borda);padding:1.2rem 0;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+  .sb-label{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--sec);font-weight:700;padding:0 .75rem;margin-bottom:.4rem;margin-top:.8rem;}
+  .sb-link{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:5px;margin:0 .4rem;font-size:.8rem;color:var(--sec);text-decoration:none;cursor:pointer;transition:.15s;}
+  .sb-link:hover,.sb-link.on{background:rgba(255,196,0,.1);color:var(--amarelo);}
+  .sb-icon{font-size:.9rem;width:16px;text-align:center;}
 
-  /* SIDEBAR */
-  .layout { display:flex; min-height:calc(100vh - 60px); }
-  .sidebar {
-    width:220px; background:var(--preto);
-    border-right:1px solid var(--borda);
-    padding:1.25rem 0; flex-shrink:0;
-    position:sticky; top:60px; height:calc(100vh - 60px); overflow-y:auto;
-  }
-  .sidebar-section { padding:0 0.75rem; margin-bottom:1.5rem; }
-  .sidebar-label { font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase;
-    color:var(--texto-sec); font-weight:700; padding:0 0.75rem; margin-bottom:0.5rem; }
-  .sidebar-link { display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.75rem;
-    border-radius:5px; font-size:0.83rem; color:var(--texto-sec); text-decoration:none;
-    cursor:pointer; transition:background 0.15s, color 0.15s; }
-  .sidebar-link:hover, .sidebar-link.active { background:rgba(255,196,0,0.1); color:var(--amarelo); }
-  .sidebar-link .icon { font-size:0.95rem; width:18px; text-align:center; }
+  .main{flex:1;padding:2rem;overflow-x:hidden;}
+  @media(max-width:900px){.sidebar{display:none;}.main{padding:1rem;}}
 
-  /* MAIN */
-  .main { flex:1; padding:2rem; overflow-x:hidden; }
-  .page-title { font-size:1.4rem; font-weight:700; color:var(--branco); margin-bottom:0.25rem; }
-  .page-subtitle { font-size:0.82rem; color:var(--texto-sec); margin-bottom:2rem; }
-  .update-time { font-size:0.72rem; color:var(--texto-sec); font-family:'DM Mono',monospace; }
+  /* CARDS */
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+  .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+  @media(max-width:1100px){.g3,.g4{grid-template-columns:1fr 1fr;}}
+  @media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr;}}
 
-  /* CARDS GRID */
-  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem; }
-  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
-  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
-  @media(max-width:1200px){.grid-4{grid-template-columns:repeat(2,1fr);}}
-  @media(max-width:800px){.grid-4,.grid-2,.grid-3{grid-template-columns:1fr;}.sidebar{display:none;}}
+  .kc{background:var(--card);border:1px solid var(--borda);border-radius:8px;padding:1.2rem;}
+  .kc-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);margin-bottom:.35rem;}
+  .kc-val{font-size:1.7rem;font-weight:700;color:#fff;line-height:1;}
+  .kc-val.y{color:var(--amarelo);}
+  .kc-sub{font-size:.72rem;color:var(--sec);margin-top:.25rem;}
+  .kc-delta{font-size:.72rem;margin-top:.15rem;}
+  .up{color:var(--verde);} .dn{color:var(--vermelho);}
 
-  .kcard { background:var(--card); border:1px solid var(--borda); border-radius:8px; padding:1.25rem; }
-  .kcard-label { font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--texto-sec); margin-bottom:0.4rem; }
-  .kcard-value { font-size:1.8rem; font-weight:700; color:var(--branco); line-height:1; }
-  .kcard-value.yellow { color:var(--amarelo); }
-  .kcard-sub { font-size:0.72rem; color:var(--texto-sec); margin-top:0.3rem; }
-  .kcard-delta { font-size:0.72rem; margin-top:0.2rem; }
-  .up { color:#4ade80; } .dn { color:#f87171; }
+  .sec-title{font-size:.9rem;font-weight:600;margin-bottom:.1rem;}
+  .sec-sub{font-size:.73rem;color:var(--sec);margin-bottom:1rem;}
+  .cc{background:var(--card);border:1px solid var(--borda);border-radius:8px;padding:1.2rem;margin-bottom:1.5rem;}
+  .divider{border:none;border-top:1px solid var(--borda);margin:.5rem 0 1.2rem;}
 
-  .section-title { font-size:0.9rem; font-weight:600; color:var(--texto); margin-bottom:0.1rem; }
-  .section-sub { font-size:0.75rem; color:var(--texto-sec); margin-bottom:1rem; }
-
-  .chart-card { background:var(--card); border:1px solid var(--borda); border-radius:8px; padding:1.25rem; }
-
-  /* INDICES TABLE */
-  table.indices { width:100%; border-collapse:collapse; font-size:0.83rem; }
-  table.indices th { text-align:left; padding:0.6rem 0.75rem; font-size:0.65rem; font-weight:700;
-    letter-spacing:0.1em; text-transform:uppercase; color:var(--texto-sec);
-    border-bottom:1px solid var(--borda); }
-  table.indices td { padding:0.65rem 0.75rem; border-bottom:1px solid rgba(255,255,255,0.04); }
-  table.indices tr:last-child td { border-bottom:none; }
-  table.indices tr:hover td { background:rgba(255,255,255,0.02); }
-  .badge { display:inline-block; padding:2px 8px; border-radius:3px; font-size:0.7rem; font-weight:600; }
-  .badge-y { background:rgba(255,196,0,0.15); color:var(--amarelo); }
-  .badge-g { background:rgba(74,222,128,0.12); color:#4ade80; }
-  .badge-r { background:rgba(248,113,113,0.12); color:#f87171; }
-  .badge-b { background:rgba(96,165,250,0.12); color:#60a5fa; }
+  /* TABLE */
+  table.idx{width:100%;border-collapse:collapse;font-size:.83rem;}
+  table.idx th{text-align:left;padding:.6rem .75rem;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sec);border-bottom:1px solid var(--borda);}
+  table.idx td{padding:.65rem .75rem;border-bottom:1px solid rgba(255,255,255,.04);}
+  table.idx tr:last-child td{border-bottom:none;}
+  table.idx tr:hover td{background:rgba(255,255,255,.02);}
+  .badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:.68rem;font-weight:600;}
+  .b-y{background:rgba(255,196,0,.15);color:var(--amarelo);}
+  .b-g{background:rgba(74,222,128,.12);color:var(--verde);}
+  .b-r{background:rgba(248,113,113,.12);color:var(--vermelho);}
+  .b-b{background:rgba(96,165,250,.12);color:var(--azul);}
 
   /* FOCUS */
-  .focus-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
-  .focus-item { background:rgba(255,196,0,0.05); border:1px solid rgba(255,196,0,0.15);
-    border-radius:6px; padding:0.9rem; }
-  .focus-indicator { font-size:0.68rem; font-weight:700; letter-spacing:0.08em;
-    text-transform:uppercase; color:var(--amarelo); margin-bottom:0.3rem; }
-  .focus-row { display:flex; justify-content:space-between; align-items:center;
-    font-size:0.8rem; color:var(--texto-sec); margin-top:0.25rem; }
-  .focus-row span:last-child { color:var(--texto); font-weight:600; font-family:'DM Mono',monospace; }
+  .focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+  .focus-item{background:rgba(255,196,0,.05);border:1px solid rgba(255,196,0,.15);border-radius:6px;padding:.9rem;}
+  .focus-ind{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amarelo);margin-bottom:.3rem;}
+  .focus-row{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--sec);margin-top:.25rem;}
+  .focus-row span:last-child{color:var(--texto);font-weight:600;font-family:'DM Mono',monospace;}
 
-  /* COMMODITIES */
-  .tv-widget { border-radius:6px; overflow:hidden; }
+  /* NEWS */
+  .news-item{display:flex;gap:.8rem;padding:.75rem 0;border-bottom:1px solid var(--borda);}
+  .news-item:last-child{border-bottom:none;}
+  .news-dot{width:8px;height:8px;border-radius:50%;background:var(--amarelo);flex-shrink:0;margin-top:6px;}
+  .news-title{font-size:.85rem;font-weight:600;color:var(--texto);line-height:1.4;}
+  .news-title a{color:var(--texto);text-decoration:none;} .news-title a:hover{color:var(--amarelo);}
+  .news-meta{font-size:.7rem;color:var(--sec);margin-top:.15rem;font-family:'DM Mono',monospace;}
+  .news-src{color:var(--amarelo);font-weight:600;}
 
+  /* COMMODITY CARDS */
+  .cmd-card{background:var(--card);border:1px solid var(--borda);border-radius:8px;padding:1rem;text-decoration:none;display:block;transition:.15s;}
+  .cmd-card:hover{border-color:var(--amarelo);transform:translateY(-2px);}
+  .cmd-icon{font-size:1.4rem;margin-bottom:.5rem;}
+  .cmd-name{font-size:.85rem;font-weight:700;color:var(--texto);margin-bottom:.2rem;}
+  .cmd-desc{font-size:.72rem;color:var(--sec);line-height:1.4;}
+  .cmd-link{font-size:.68rem;color:var(--amarelo);font-weight:600;margin-top:.4rem;display:block;}
 
-  /* SPINNER */
-  .spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,196,0,0.3);
-    border-top-color:var(--amarelo); border-radius:50%; animation:spin 0.6s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-
-  /* DIVIDER */
-  .divider { border:none; border-top:1px solid var(--borda); margin:0.5rem 0 1.25rem; }
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,196,0,.3);border-top-color:var(--amarelo);border-radius:50%;animation:sp .6s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+  .upd{font-size:.72rem;color:var(--sec);font-family:'DM Mono',monospace;}
 </style>
 </head>
 <body>
@@ -129,403 +105,424 @@
   <div class="logo-wrap">
     <img src="data:image/png;base64,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" alt="GeoMit">
   </div>
-  <div class="header-right">
-    <span class="breadcrumb"><a href="index.html">ProcIA</a> <span>›</span> Dashboard</span>
-    <button class="btn btn-yellow" onclick="exportPDF()" data-pt="⬇ Exportar PDF" data-en="⬇ Export PDF">⬇ Exportar PDF</button>
-    <div style="display:flex;gap:4px;margin-left:6px;">
-      <button onclick="setLang('pt')" id="btn-pt" style="background:var(--amarelo);color:#000;border:none;padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">PT</button>
-      <button onclick="setLang('en')" id="btn-en" style="background:rgba(255,255,255,0.1);color:#aaa;border:1px solid #333;padding:3px 9px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;">EN</button>
+  <div class="hdr-right">
+    <span class="bc"><a href="index.html">ProcIA</a> <span style="color:var(--sec)">›</span> <span data-pt="Dashboard" data-en="Dashboard">Dashboard</span></span>
+    <button class="btn btn-g" onclick="refreshAll()" data-pt="🔄 Atualizar" data-en="🔄 Refresh">🔄 Atualizar</button>
+      <button class="btn btn-y" onclick="exportPDF()" data-pt="⬇ Exportar PDF" data-en="⬇ Export PDF">⬇ Exportar PDF</button>
+    <div class="lang-wrap">
+      <button class="lang-btn on" id="btn-pt" onclick="setLang('pt')">PT</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
     </div>
   </div>
 </header>
 
 <div class="layout">
+<nav class="sidebar">
+  <div class="sb-label">Navegação</div>
+  <a href="index.html" class="sb-link"><span class="sb-icon">🏠</span> Portal</a>
+  <a href="dashboard.html" class="sb-link on"><span class="sb-icon">📊</span> Dashboard</a>
+  <a href="vendor-list.html" class="sb-link"><span class="sb-icon">🏭</span> <span data-pt="Fornecedores" data-en="Suppliers">Fornecedores</span></a>
+  <a href="cadastro.html" class="sb-link"><span class="sb-icon">➕</span> <span data-pt="Cadastro" data-en="Registration">Cadastro</span></a>
+  <div class="sb-label" data-pt="Indicadores" data-en="Indicators">Indicadores</div>
+  <a onclick="goTo('sec-news')" class="sb-link"><span class="sb-icon">📰</span> <span data-pt="Notícias" data-en="News">Notícias</span></a>
+  <a onclick="goTo('sec-cambio')" class="sb-link"><span class="sb-icon">💱</span> <span data-pt="Câmbio" data-en="Exchange">Câmbio</span></a>
+  <a onclick="goTo('sec-idx')" class="sb-link"><span class="sb-icon">📈</span> <span data-pt="Índices" data-en="Indices">Índices</span></a>
+  <a onclick="goTo('sec-focus')" class="sb-link"><span class="sb-icon">🔭</span> Focus BCB</a>
+  <a onclick="goTo('sec-cmd')" class="sb-link"><span class="sb-icon">🛢️</span> Commodities</a>
+</nav>
 
-  <!-- SIDEBAR -->
-  <nav class="sidebar">
-    <div class="sidebar-label">Navegação</div>
-    <div class="sidebar-section">
-      <a href="index.html" class="sidebar-link"><span class="icon">🏠</span> Portal</a>
-      <a href="dashboard.html" class="sidebar-link active"><span class="icon">📊</span> Dashboard</a>
-      <a href="vendor-list.html" class="sidebar-link"><span class="icon">🏭</span> Fornecedores</a>
-      <a href="cadastro.html" class="sidebar-link"><span class="icon">➕</span> Cadastro</a>
+<main class="main" id="dash-export">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;">
+    <div>
+      <div style="font-size:1.4rem;font-weight:700;" data-pt="Dashboard de Indicadores" data-en="Indicators Dashboard">Dashboard de Indicadores</div>
+      <div style="font-size:.82rem;color:var(--sec);" data-pt="Câmbio, inflação, projeções BCB e commodities para procurement de biogás" data-en="Exchange rates, inflation, BCB projections and commodities for biogas procurement">Câmbio, inflação, projeções BCB e commodities para procurement de biogás</div>
     </div>
-    <div class="sidebar-label">Indicadores</div>
-    <div class="sidebar-section">
-      <a onclick="scrollTo('sec-cambio')" class="sidebar-link"><span class="icon">💱</span> Câmbio</a>
-      <a onclick="scrollTo('sec-indices')" class="sidebar-link"><span class="icon">📈</span> Índices BCB</a>
-      <a onclick="scrollTo('sec-focus')" class="sidebar-link"><span class="icon">🔭</span> Focus BCB</a>
-      <a onclick="scrollTo('sec-commodities')" class="sidebar-link"><span class="icon">🛢️</span> Commodities</a>
+    <div class="upd" id="upd-time">—</div>
+  </div>
+
+  <!-- ══════ NEWS ══════ -->
+  <div id="sec-news">
+    <div class="sec-title" data-pt="📰 Headlines — Mercado e Economia" data-en="📰 Headlines — Market & Economy">📰 Headlines — Mercado e Economia</div>
+    <div class="sec-sub" data-pt="Fontes: InfoMoney, Valor Econômico, Bloomberg Línea • Via RSS" data-en="Sources: InfoMoney, Valor Econômico, Bloomberg Línea • Via RSS">Fontes: InfoMoney, Valor Econômico, Bloomberg Línea • Via RSS</div>
+    <div class="cc" id="news-box">
+      <div style="color:var(--sec);font-size:.83rem;"><span class="spin"></span> <span data-pt="Carregando notícias…" data-en="Loading news…">Carregando notícias…</span></div>
     </div>
-  </nav>
+  </div>
 
-  <!-- MAIN CONTENT -->
-  <main class="main" id="dash-export">
+  <hr class="divider" id="sec-cambio">
 
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;">
-      <div>
-        <div class="page-title" data-pt="Dashboard de Indicadores" data-en="Indicators Dashboard">Dashboard de Indicadores</div>
-        <div class="page-subtitle" data-pt="Câmbio, inflação, projeções BCB e análise de mercado para procurement de biogás" data-en="Exchange rates, inflation, BCB projections and market analysis for biogas procurement">Câmbio, inflação, projeções BCB e análise de mercado para procurement de biogás</div>
-      </div>
-      <div class="update-time" id="update-time">Atualizando…</div>
+  <!-- ══════ CÂMBIO ══════ -->
+  <div class="sec-title" data-pt="Câmbio ao Vivo — USD e EUR" data-en="Live Exchange Rates — USD & EUR">Câmbio ao Vivo — USD e EUR</div>
+  <div class="sec-sub" data-pt="Fonte: AwesomeAPI • Atualização automática a cada 60s" data-en="Source: AwesomeAPI • Auto-refresh every 60s">Fonte: AwesomeAPI • Atualização automática a cada 60s</div>
+
+  <div class="g2">
+    <div class="kc">
+      <div class="kc-label">USD / BRL</div>
+      <div class="kc-val y" id="usd-val">—</div>
+      <div class="kc-delta" id="usd-day">—</div>
+      <div class="kc-sub" id="usd-week" data-pt="Variação semanal: —" data-en="Weekly change: —">Variação semanal: —</div>
     </div>
-
-    <!-- KPI STRIP: CAMBIO -->
-    <div id="sec-cambio">
-      <div class="section-title" data-pt="Câmbio ao Vivo" data-en="Live Exchange Rates">Câmbio ao Vivo</div>
-      <div class="section-sub" data-pt="Fonte: AwesomeAPI • Atualização em tempo real" data-en="Source: AwesomeAPI • Real-time update">Fonte: AwesomeAPI • Atualização em tempo real</div>
-      <div class="grid-4">
-        <div class="kcard">
-          <div class="kcard-label">USD / BRL</div>
-          <div class="kcard-value yellow" id="usd-val">—</div>
-          <div class="kcard-delta" id="usd-pct">—</div>
-          <div class="kcard-sub" id="usd-ts">—</div>
-        </div>
-        <div class="kcard">
-          <div class="kcard-label">EUR / BRL</div>
-          <div class="kcard-value yellow" id="eur-val">—</div>
-          <div class="kcard-delta" id="eur-pct">—</div>
-          <div class="kcard-sub" id="eur-ts">—</div>
-        </div>
-        <div class="kcard">
-          <div class="kcard-label">CNY / BRL</div>
-          <div class="kcard-value" id="cny-val">—</div>
-          <div class="kcard-delta" id="cny-pct">—</div>
-          <div class="kcard-sub">Yuan Chinês</div>
-        </div>
-        <div class="kcard">
-          <div class="kcard-label">GBP / BRL</div>
-          <div class="kcard-value" id="gbp-val">—</div>
-          <div class="kcard-delta" id="gbp-pct">—</div>
-          <div class="kcard-sub">Libra Esterlina</div>
-        </div>
-      </div>
+    <div class="kc">
+      <div class="kc-label">EUR / BRL</div>
+      <div class="kc-val y" id="eur-val">—</div>
+      <div class="kc-delta" id="eur-day">—</div>
+      <div class="kc-sub" id="eur-week" data-pt="Variação semanal: —" data-en="Weekly change: —">Variação semanal: —</div>
     </div>
+  </div>
 
-    <!-- CAMBIO CHART -->
-    <div class="chart-card" style="margin-bottom:1.5rem;">
-      <div class="section-title">USD/BRL — Últimos 7 dias</div>
-      <div class="section-sub">Cotação de fechamento diário</div>
-      <canvas id="cambioChart" height="80"></canvas>
-    </div>
+  <!-- CHART -->
+  <div class="cc">
+    <div class="sec-title" data-pt="USD/BRL e EUR/BRL — Últimos 7 dias" data-en="USD/BRL & EUR/BRL — Last 7 days">USD/BRL e EUR/BRL — Últimos 7 dias</div>
+    <div class="sec-sub" data-pt="Cotação de fechamento diário" data-en="Daily closing rate">Cotação de fechamento diário</div>
+    <canvas id="cambioChart" height="80"></canvas>
+  </div>
 
-    <hr class="divider" id="sec-indices">
+  <hr class="divider" id="sec-idx">
 
-    <!-- INDICES BCB -->
-    <div class="section-title" data-pt="Índices Econômicos — BCB SGS" data-en="Economic Indices — BCB SGS">Índices Econômicos — BCB SGS</div>
-    <div class="section-sub" data-pt="Acumulado 12 meses • Série histórica oficial Banco Central do Brasil" data-en="12-month accumulated • Official Central Bank of Brazil historical series">Acumulado 12 meses • Série histórica oficial Banco Central do Brasil</div>
+  <!-- ══════ ÍNDICES BCB ══════ -->
+  <div class="sec-title" data-pt="Índices Econômicos — BCB SGS" data-en="Economic Indices — BCB SGS">Índices Econômicos — BCB SGS</div>
+  <div class="sec-sub" data-pt="Acumulado 12 meses (produto composto) • Fonte: Banco Central do Brasil" data-en="12-month accumulated (compound product) • Source: Central Bank of Brazil">Acumulado 12 meses (produto composto) • Fonte: Banco Central do Brasil</div>
 
-    <div class="chart-card" style="margin-bottom:1.5rem;">
-      <table class="indices" id="indices-table">
-        <thead>
-          <tr>
-            <th>Indicador</th>
-            <th>Descrição</th>
-            <th>Acum. 12m (%)</th>
-            <th>Uso em Procurement</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Selic</strong></td>
-            <td>Taxa básica de juros</td>
-            <td id="td-selic">—</td>
-            <td>Custo de capital, financiamentos</td>
-            <td><span class="badge badge-y">Referência</span></td>
-          </tr>
-          <tr>
-            <td><strong>IPCA</strong></td>
-            <td>Inflação oficial (IBGE)</td>
-            <td id="td-ipca">—</td>
-            <td>Reajuste de contratos</td>
-            <td><span class="badge badge-g">Baixo</span></td>
-          </tr>
-          <tr>
-            <td><strong>INPC</strong></td>
-            <td>Inflação (baixa renda)</td>
-            <td id="td-inpc">—</td>
-            <td>Reajuste mão de obra</td>
-            <td><span class="badge badge-g">Referência</span></td>
-          </tr>
-          <tr>
-            <td><strong>IGP-M</strong></td>
-            <td>Índice Geral de Preços</td>
-            <td id="td-igpm">—</td>
-            <td>Contratos de aluguel / utilidades</td>
-            <td><span class="badge badge-b">Médio</span></td>
-          </tr>
-          <tr>
-            <td><strong>INCC</strong></td>
-            <td>Construção civil</td>
-            <td id="td-incc">—</td>
-            <td>CAPEX — obras e instalações</td>
-            <td><span class="badge badge-r">Atenção</span></td>
-          </tr>
-          <tr>
-            <td><strong>TJLP</strong></td>
-            <td>Taxa de longo prazo (BNDES)</td>
-            <td id="td-tjlp">—</td>
-            <td>Financiamento BNDES / CAPEX</td>
-            <td><span class="badge badge-y">Referência</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="cc">
+    <table class="idx">
+      <thead><tr>
+        <th data-pt="Indicador" data-en="Indicator">Indicador</th>
+        <th data-pt="Descrição" data-en="Description">Descrição</th>
+        <th data-pt="Valor" data-en="Value">Valor</th>
+        <th data-pt="Uso em Procurement" data-en="Procurement Use">Uso em Procurement</th>
+        <th>Status</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Selic</strong></td><td data-pt="Taxa básica de juros" data-en="Base interest rate">Taxa básica de juros</td><td id="td-selic"><span class="spin"></span></td><td data-pt="Custo de capital, financiamentos" data-en="Cost of capital, financing">Custo de capital, financiamentos</td><td><span class="badge b-y" data-pt="Referência" data-en="Reference">Referência</span></td></tr>
+        <tr><td><strong>IPCA</strong></td><td data-pt="Inflação oficial (IBGE)" data-en="Official inflation (IBGE)">Inflação oficial (IBGE)</td><td id="td-ipca"><span class="spin"></span></td><td data-pt="Reajuste de contratos" data-en="Contract adjustments">Reajuste de contratos</td><td><span class="badge b-g" data-pt="Referência" data-en="Reference">Referência</span></td></tr>
+        <tr><td><strong>INPC</strong></td><td data-pt="Inflação (baixa renda)" data-en="Inflation (low income)">Inflação (baixa renda)</td><td id="td-inpc"><span class="spin"></span></td><td data-pt="Reajuste mão de obra" data-en="Labor cost adjustments">Reajuste mão de obra</td><td><span class="badge b-g" data-pt="Referência" data-en="Reference">Referência</span></td></tr>
+        <tr><td><strong>IGP-M</strong></td><td data-pt="Índice Geral de Preços" data-en="General Price Index">Índice Geral de Preços</td><td id="td-igpm"><span class="spin"></span></td><td data-pt="Contratos de aluguel / utilidades" data-en="Rental / utility contracts">Contratos de aluguel / utilidades</td><td><span class="badge b-b" data-pt="Médio" data-en="Medium">Médio</span></td></tr>
+        <tr><td><strong>INCC</strong></td><td data-pt="Construção civil" data-en="Construction">Construção civil</td><td id="td-incc"><span class="spin"></span></td><td data-pt="CAPEX — obras e instalações" data-en="CAPEX — construction & facilities">CAPEX — obras e instalações</td><td><span class="badge b-r" data-pt="Atenção" data-en="Attention">Atenção</span></td></tr>
+        <tr><td><strong>TJLP</strong></td><td data-pt="Taxa de longo prazo (BNDES)" data-en="Long-term rate (BNDES)">Taxa de longo prazo (BNDES)</td><td id="td-tjlp"><span class="spin"></span></td><td data-pt="Financiamento BNDES / CAPEX" data-en="BNDES financing / CAPEX">Financiamento BNDES / CAPEX</td><td><span class="badge b-y" data-pt="Referência" data-en="Reference">Referência</span></td></tr>
+      </tbody>
+    </table>
+  </div>
 
-    <hr class="divider" id="sec-focus">
+  <hr class="divider" id="sec-focus">
 
-    <!-- FOCUS BCB -->
-    <div class="section-title" data-pt="Projeções Focus — Banco Central" data-en="Focus Projections — Central Bank">Projeções Focus — Banco Central</div>
-    <div class="section-sub" data-pt="Mediana das expectativas do mercado • Top 500 instituições • Fonte: BCB Olinda" data-en="Market expectations median • Top 500 institutions • Source: BCB Olinda">Mediana das expectativas do mercado • Top 500 instituições • Fonte: BCB Olinda</div>
+  <!-- ══════ FOCUS BCB ══════ -->
+  <div class="sec-title" data-pt="Projeções Focus — Banco Central" data-en="Focus Projections — Central Bank">Projeções Focus — Banco Central</div>
+  <div class="sec-sub" data-pt="Mediana das expectativas • Top 500 instituições • Fonte: BCB Olinda" data-en="Market expectations median • Top 500 institutions • Source: BCB Olinda">Mediana das expectativas • Top 500 instituições • Fonte: BCB Olinda</div>
 
-    <div class="chart-card" style="margin-bottom:1.5rem;">
-      <div class="focus-grid" id="focus-grid">
-        <div class="focus-item" style="grid-column:1/-1;color:var(--texto-sec);font-size:0.82rem;">
-          <span class="spin"></span> Carregando projeções Focus…
-        </div>
+  <div class="cc">
+    <div class="focus-grid" id="focus-grid">
+      <div class="focus-item" style="grid-column:1/-1;color:var(--sec);font-size:.82rem;">
+        <span class="spin"></span> <span data-pt="Carregando projeções…" data-en="Loading projections…">Carregando projeções…</span>
       </div>
     </div>
+  </div>
 
-    <hr class="divider" id="sec-commodities">
+  <hr class="divider" id="sec-cmd">
 
-    <!-- COMMODITIES -->
-    <div class="section-title" data-pt="Commodities — Referência CAPEX" data-en="Commodities — CAPEX Reference">Commodities — Referência CAPEX</div>
-    <div class="section-sub">Petróleo Brent e Baltic Dry Index via TradingView • Outros via TradingEconomics</div>
+  <!-- ══════ COMMODITIES ══════ -->
+  <div class="sec-title" data-pt="Commodities — Referência CAPEX" data-en="Commodities — CAPEX Reference">Commodities — Referência CAPEX</div>
+  <div class="sec-sub" data-pt="Petróleo Brent e BDI via TradingView • Metais e insumos via TradingEconomics" data-en="Brent Oil & BDI via TradingView • Metals & materials via TradingEconomics">Petróleo Brent e BDI via TradingView • Metais e insumos via TradingEconomics</div>
 
-    <div class="grid-2" style="margin-bottom:1rem;">
-      <div class="chart-card">
-        <div class="section-title" style="margin-bottom:0.75rem;">🛢️ Brent Crude (TVC:UKOIL)</div>
-        <div class="tv-widget" style="height:300px;">
-          <iframe
-            src="https://s.tradingview.com/widgetembed/?symbol=TVC%3AUKOIL&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt"
-            width="100%" height="300" frameborder="0" allowtransparency="true" scrolling="no"
-            style="border-radius:6px; border:1px solid var(--borda);">
-          </iframe>
-        </div>
-      </div>
-      <div class="chart-card">
-        <div class="section-title" style="margin-bottom:0.75rem;">⚓ Baltic Dry Index (INDEX:BDI)</div>
-        <div class="tv-widget" style="height:300px;">
-          <iframe
-            src="https://s.tradingview.com/widgetembed/?symbol=INDEX%3ABDI&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt"
-            width="100%" height="300" frameborder="0" allowtransparency="true" scrolling="no"
-            style="border-radius:6px; border:1px solid var(--borda);">
-          </iframe>
-        </div>
+  <div class="g2">
+    <div class="cc" style="margin-bottom:0;">
+      <div class="sec-title" style="margin-bottom:.75rem;">🛢️ Brent Crude (TVC:UKOIL)</div>
+      <div style="height:300px;border-radius:6px;overflow:hidden;">
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=TVC%3AUKOIL&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&locale=pt" width="100%" height="300" frameborder="0" scrolling="no" style="border:1px solid var(--borda);border-radius:6px;"></iframe>
       </div>
     </div>
-
-    <!-- Commodities links diretos -->
-    <div class="chart-card" style="margin-bottom:1.5rem;">
-      <div class="section-title" style="margin-bottom:0.75rem;" data-pt="Links Diretos — Aço, Cobre, Alumínio e outros" data-en="Direct Links — Steel, Copper, Aluminum and others">Links Diretos — Aço, Cobre, Alumínio e outros</div>
-      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-        <a href="https://tradingeconomics.com/commodity/steel" target="_blank" class="btn btn-ghost">🔩 Aço HRC</a>
-        <a href="https://tradingeconomics.com/commodity/copper" target="_blank" class="btn btn-ghost">🟤 Cobre</a>
-        <a href="https://tradingeconomics.com/commodity/aluminum" target="_blank" class="btn btn-ghost">⚪ Alumínio</a>
-        <a href="https://tradingeconomics.com/commodity/zinc" target="_blank" class="btn btn-ghost">🔘 Zinco</a>
-        <a href="https://tradingeconomics.com/commodity/nickel" target="_blank" class="btn btn-ghost">⚙️ Níquel</a>
-        <a href="https://tradingeconomics.com/commodity/stainless-steel" target="_blank" class="btn btn-ghost">✨ Aço Inox</a>
-        <a href="https://tradingeconomics.com/brazil/construction-output" target="_blank" class="btn btn-ghost">🏗️ Construção BR</a>
+    <div class="cc" style="margin-bottom:0;">
+      <div class="sec-title" style="margin-bottom:.75rem;">⚓ Baltic Dry Index (INDEX:BDI)</div>
+      <div style="height:300px;border-radius:6px;overflow:hidden;">
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=INDEX%3ABDI&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&locale=pt" width="100%" height="300" frameborder="0" scrolling="no" style="border:1px solid var(--borda);border-radius:6px;"></iframe>
       </div>
     </div>
+  </div>
 
-    
-  </main>
+  <div class="g4" style="margin-top:1rem;">
+    <a href="https://tradingeconomics.com/commodity/steel" target="_blank" class="cmd-card">
+      <div class="cmd-icon">🔩</div>
+      <div class="cmd-name" data-pt="Aço HRC" data-en="HRC Steel">Aço HRC</div>
+      <div class="cmd-desc" data-pt="Bobina a quente — referência CAPEX" data-en="Hot rolled coil — CAPEX reference">Bobina a quente — referência CAPEX</div>
+      <span class="cmd-link">TradingEconomics →</span>
+    </a>
+    <a href="https://tradingeconomics.com/commodity/stainless-steel" target="_blank" class="cmd-card">
+      <div class="cmd-icon">✨</div>
+      <div class="cmd-name" data-pt="Aço Inoxidável" data-en="Stainless Steel">Aço Inoxidável</div>
+      <div class="cmd-desc" data-pt="Referência para tanques e tubulações" data-en="Reference for tanks and piping">Referência para tanques e tubulações</div>
+      <span class="cmd-link">TradingEconomics →</span>
+    </a>
+    <a href="https://tradingeconomics.com/commodity/cobalt" target="_blank" class="cmd-card">
+      <div class="cmd-icon">🔷</div>
+      <div class="cmd-name" data-pt="Cobalto" data-en="Cobalt">Cobalto</div>
+      <div class="cmd-desc" data-pt="Ligas especiais e catalisadores" data-en="Special alloys and catalysts">Ligas especiais e catalisadores</div>
+      <span class="cmd-link">TradingEconomics →</span>
+    </a>
+    <a href="https://tradingeconomics.com/brazil/cement-production" target="_blank" class="cmd-card">
+      <div class="cmd-icon">🧱</div>
+      <div class="cmd-name" data-pt="Cimento (BR)" data-en="Cement (BR)">Cimento (BR)</div>
+      <div class="cmd-desc" data-pt="Produção e índice Brasil — SNIC" data-en="Production and Brazil index — SNIC">Produção e índice Brasil — SNIC</div>
+      <span class="cmd-link">TradingEconomics →</span>
+    </a>
+  </div>
+
+  <!-- Links extras -->
+  <div class="cc" style="margin-top:1rem;">
+    <div class="sec-title" style="margin-bottom:.75rem;" data-pt="Mais Commodities — Links Diretos" data-en="More Commodities — Direct Links">Mais Commodities — Links Diretos</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+      <a href="https://tradingeconomics.com/commodity/copper" target="_blank" class="btn btn-g">🟤 <span data-pt="Cobre" data-en="Copper">Cobre</span></a>
+      <a href="https://tradingeconomics.com/commodity/aluminum" target="_blank" class="btn btn-g">⚪ <span data-pt="Alumínio" data-en="Aluminum">Alumínio</span></a>
+      <a href="https://tradingeconomics.com/commodity/zinc" target="_blank" class="btn btn-g">🔘 <span data-pt="Zinco" data-en="Zinc">Zinco</span></a>
+      <a href="https://tradingeconomics.com/commodity/nickel" target="_blank" class="btn btn-g">⚙️ <span data-pt="Níquel" data-en="Nickel">Níquel</span></a>
+      <a href="https://tradingeconomics.com/commodity/natural-gas" target="_blank" class="btn btn-g">⛽ <span data-pt="Gás Natural" data-en="Natural Gas">Gás Natural</span></a>
+      <a href="https://tradingeconomics.com/brazil/construction-output" target="_blank" class="btn btn-g">🏗️ <span data-pt="Construção BR" data-en="Construction BR">Construção BR</span></a>
+    </div>
+  </div>
+
+</main>
 </div>
 
 <script>
-// ── SCROLL HELPER ──
-function scrollTo(id) {
-  document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+function goTo(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function setTime(){ document.getElementById('upd-time').textContent=(localStorage.getItem('proCIA-lang')==='en'?'Updated: ':'Atualizado: ')+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
+
+// ── LANGUAGE ──
+function setLang(l){
+  localStorage.setItem('proCIA-lang',l);
+  document.getElementById('btn-pt').className='lang-btn'+(l==='pt'?' on':'');
+  document.getElementById('btn-en').className='lang-btn'+(l==='en'?' on':'');
+  document.querySelectorAll('[data-pt]').forEach(el=>{
+    el.textContent=l==='en'?(el.dataset.en||el.dataset.pt):el.dataset.pt;
+  });
+  setTime();
 }
 
-// ── UPDATE TIME ──
-function setUpdateTime() {
-  const now = new Date();
-  document.getElementById('update-time').textContent =
-    'Atualizado: ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
+// ── FETCH WITH TIMEOUT ──
+async function ftch(url,ms=8000){
+  const c=new AbortController(); const id=setTimeout(()=>c.abort(),ms);
+  try{const r=await fetch(url,{signal:c.signal});clearTimeout(id);return r;}
+  catch(e){clearTimeout(id);throw e;}
 }
 
-// ── CAMBIO ──
-async function fetchWithTimeout(url, ms=8000) {
-    const ctrl = new AbortController();
-    const id = setTimeout(() => ctrl.abort(), ms);
-    try { const r = await fetch(url, {signal: ctrl.signal}); clearTimeout(id); return r; }
-    catch(e) { clearTimeout(id); throw e; }
-  }
-
-  async function loadCambio() {
-  try {
-    const r = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,CNY-BRL,GBP-BRL');
-    const d = await r.json();
-    const pairs = [
-      {key:'USDBRL', prefix:'usd', label:'Dólar Americano'},
-      {key:'EURBRL', prefix:'eur', label:'Euro'},
-      {key:'CNYBRL', prefix:'cny', label:'Yuan Chinês'},
-      {key:'GBPBRL', prefix:'gbp', label:'Libra Esterlina'},
-    ];
-    pairs.forEach(p => {
-      const v = parseFloat(d[p.key].bid).toFixed(4);
-      const pct = parseFloat(d[p.key].pctChange).toFixed(2);
-      const valEl = document.getElementById(p.prefix+'-val');
-      const pctEl = document.getElementById(p.prefix+'-pct');
-      if (valEl) valEl.textContent = 'R$ ' + v;
-      if (pctEl) {
-        pctEl.textContent = (pct>=0?'▲':'▼') + ' ' + Math.abs(pct) + '% hoje';
-        pctEl.className = 'kcard-delta ' + (pct<0?'up':'dn');
-      }
-      const tsEl = document.getElementById(p.prefix+'-ts');
-      if (tsEl) tsEl.textContent = p.label;
+// ── CÂMBIO ──
+async function loadCambio(){
+  try{
+    const r=await ftch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL');
+    const d=await r.json();
+    [['USDBRL','usd'],['EURBRL','eur']].forEach(([k,p])=>{
+      const v=parseFloat(d[k].bid).toFixed(4);
+      const pct=parseFloat(d[k].pctChange).toFixed(2);
+      document.getElementById(p+'-val').textContent='R$ '+v;
+      const el=document.getElementById(p+'-day');
+      el.textContent=(pct>=0?'▲ ':'▼ ')+Math.abs(pct)+'% hoje';
+      el.className='kc-delta '+(pct<0?'up':'dn');
     });
-  } catch(e) { console.error('Cambio error:', e); }
+  }catch(e){
+    document.getElementById('usd-val').textContent='N/D';
+    document.getElementById('eur-val').textContent='N/D';
+  }
 }
 
-// ── CAMBIO CHART (7 dias) ──
-async function loadCambioChart() {
-  try {
-    const r = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/daily/USD-BRL/7');
-    const data = await r.json();
-    const labels = data.map(d => {
-      const dt = new Date(d.timestamp * 1000);
-      return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-    }).reverse();
-    const vals = data.map(d => parseFloat(d.bid)).reverse();
-    const ctx = document.getElementById('cambioChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
+// ── WEEKLY CHANGE ──
+async function loadWeekly(){
+  try{
+    const [ru,re]=await Promise.all([
+      ftch('https://economia.awesomeapi.com.br/json/daily/USD-BRL/7'),
+      ftch('https://economia.awesomeapi.com.br/json/daily/EUR-BRL/7')
+    ]);
+    const du=await ru.json(), de=await re.json();
+    const lang=localStorage.getItem('proCIA-lang')||'pt';
+    [['usd',du],['eur',de]].forEach(([p,data])=>{
+      if(data.length>=2){
+        const newest=parseFloat(data[0].bid);
+        const oldest=parseFloat(data[data.length-1].bid);
+        const pct=((newest-oldest)/oldest*100).toFixed(2);
+        const el=document.getElementById(p+'-week');
+        const label=lang==='en'?'Weekly: ':'Semanal: ';
+        el.textContent=label+(pct>=0?'▲ ':'▼ ')+Math.abs(pct)+'%';
+      }
+    });
+  }catch(e){}
+}
+
+// ── CHART USD + EUR 7 DIAS ──
+let cambioChartInstance=null;
+async function loadChart(){
+  try{
+    if(cambioChartInstance) cambioChartInstance.destroy();
+    const [ru,re]=await Promise.all([
+      ftch('https://economia.awesomeapi.com.br/json/daily/USD-BRL/7'),
+      ftch('https://economia.awesomeapi.com.br/json/daily/EUR-BRL/7')
+    ]);
+    const du=(await ru.json()).reverse(), de=(await re.json()).reverse();
+    const labels=du.map(d=>{const dt=new Date(d.timestamp*1000);return dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});});
+    const ctx=document.getElementById('cambioChart').getContext('2d');
+    cambioChartInstance=new Chart(ctx,{
+      type:'line',
+      data:{
         labels,
-        datasets: [{
-          label: 'USD/BRL',
-          data: vals,
-          borderColor: '#FFC400',
-          backgroundColor: 'rgba(255,196,0,0.08)',
-          borderWidth: 2,
-          tension: 0.3,
-          pointRadius: 4,
-          pointBackgroundColor: '#FFC400',
-          fill: true,
-        }]
+        datasets:[
+          {label:'USD/BRL',data:du.map(d=>parseFloat(d.bid)),borderColor:'#FFC400',backgroundColor:'rgba(255,196,0,.08)',borderWidth:2,tension:.3,pointRadius:4,pointBackgroundColor:'#FFC400',fill:true},
+          {label:'EUR/BRL',data:de.map(d=>parseFloat(d.bid)),borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,.08)',borderWidth:2,tension:.3,pointRadius:4,pointBackgroundColor:'#60a5fa',fill:true}
+        ]
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: ctx => 'R$ ' + ctx.parsed.y.toFixed(4)
-            }
-          }
-        },
-        scales: {
-          x: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#999'} },
-          y: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#999', callback: v => 'R$ '+v.toFixed(2)} }
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true,labels:{color:'#999',font:{size:12}}},tooltip:{callbacks:{label:c=>'R$ '+c.parsed.y.toFixed(4)}}},
+        scales:{
+          x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#999'}},
+          y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#999',callback:v=>'R$ '+v.toFixed(2)}}
         }
       }
     });
-  } catch(e) { console.error('Chart error:', e); }
+  }catch(e){console.error('Chart:',e);}
 }
 
-// ── BCB INDICES ──
-async function loadIndices() {
-  const series = [
-    {code:432, id:'td-selic'},
-    {code:433, id:'td-ipca'},
-    {code:188, id:'td-inpc'},
-    {code:189, id:'td-igpm'},
-    {code:192, id:'td-incc'},
-    {code:256, id:'td-tjlp'},
+// ── BCB INDICES (ACUMULADO 12M - PRODUTO COMPOSTO) ──
+async function loadIndices(){
+  const series=[
+    {code:432, id:'td-selic', type:'rate', label:'% a.a.'},
+    {code:433, id:'td-ipca', type:'acum', label:'% acum. 12m'},
+    {code:188, id:'td-inpc', type:'acum', label:'% acum. 12m'},
+    {code:189, id:'td-igpm', type:'acum', label:'% acum. 12m'},
+    {code:192, id:'td-incc', type:'acum', label:'% acum. 12m'},
+    {code:256, id:'td-tjlp', type:'rate', label:'% a.a.'},
   ];
-  for (const s of series) {
-    try {
-      const r = await fetchWithTimeout(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
-      const d = await r.json();
-      const el = document.getElementById(s.id);
-      if (el) el.textContent = parseFloat(d[0].valor).toFixed(2) + '%';
-    } catch(e) { document.getElementById(s.id).textContent = 'N/D'; }
+  for(const s of series){
+    try{
+      if(s.type==='rate'){
+        const r=await ftch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
+        const d=await r.json();
+        document.getElementById(s.id).innerHTML=`<strong>${parseFloat(d[0].valor).toFixed(2)}%</strong> <span style="font-size:.7rem;color:var(--sec)">${s.label}</span>`;
+      } else {
+        // Fetch 13 months and calculate compound product
+        const r=await ftch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/13?formato=json`);
+        const d=await r.json();
+        if(d.length>=12){
+          const last12=d.slice(-12);
+          let acum=1;
+          last12.forEach(m=>{ acum*=(1+parseFloat(m.valor)/100); });
+          const result=((acum-1)*100).toFixed(2);
+          document.getElementById(s.id).innerHTML=`<strong>${result}%</strong> <span style="font-size:.7rem;color:var(--sec)">${s.label}</span>`;
+        } else {
+          document.getElementById(s.id).textContent='N/D';
+        }
+      }
+    }catch(e){
+      document.getElementById(s.id).textContent='—';
+    }
   }
 }
 
-// ── FOCUS BCB ──
-async function loadFocus() {
-  const indicators = [
-    { name: 'IPCA', query: 'IPCA' },
-    { name: 'PIB', query: 'PIB Total' },
-    { name: 'Câmbio', query: 'Taxa de câmbio' },
-    { name: 'Selic', query: 'Taxa de juros' },
+// ── FOCUS BCB (top 500 sem filtro de ano, parse client-side) ──
+async function loadFocus(){
+  const indicators=[
+    {name:'IPCA', query:'IPCA', isCurrency:false},
+    {name:'PIB', query:'PIB Total', isCurrency:false},
+    {name:'Câmbio', query:'Taxa de câmbio', isCurrency:true},
+    {name:'Selic', query:'Taxa de juros', isCurrency:false},
   ];
-  const years = [2026, 2027];
-  const grid = document.getElementById('focus-grid');
-  grid.innerHTML = '';
-
-  for (const ind of indicators) {
-    const el = document.createElement('div');
-    el.className = 'focus-item';
-    el.innerHTML = `<div class="focus-indicator">${ind.name}</div>`;
-
-    for (const yr of years) {
-      try {
-        const url = `https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativaMercadoAnuais?%24filter=Indicador%20eq%20'${encodeURIComponent(ind.query)}'%20and%20Data%20ge%20'2025-01-01'%20and%20Suavizado%20eq%20'N'%20and%20Ano%20eq%20'${yr}'&%24top=5&%24orderby=Data%20desc&%24format=json&%24select=Indicador,Data,Mediana,Ano`;
-        const r = await fetch(url);
-        const d = await r.json();
-        if (d.value && d.value.length > 0) {
-          const med = parseFloat(d.value[0].Mediana);
-          el.innerHTML += `<div class="focus-row"><span>${yr}</span><span>${isNaN(med)?'N/D':med.toFixed(2)+'%'}</span></div>`;
+  const years=[2026,2027];
+  const grid=document.getElementById('focus-grid');
+  grid.innerHTML='';
+  for(const ind of indicators){
+    const el=document.createElement('div');
+    el.className='focus-item';
+    el.innerHTML=`<div class="focus-ind">${ind.name}</div>`;
+    try{
+      const url=`https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?$filter=Indicador eq '${encodeURIComponent(ind.query)}'&$top=500&$orderby=Data desc&$format=json&$select=Indicador,Data,Mediana,DataReferencia`;
+      const r=await ftch(url,12000);
+      const d=await r.json();
+      for(const yr of years){
+        const match=d.value?.find(v=>String(v.DataReferencia)===String(yr));
+        if(match){
+          const med=parseFloat(match.Mediana);
+          const fmt=ind.isCurrency?'R$ '+med.toFixed(2):med.toFixed(2)+'%';
+          el.innerHTML+=`<div class="focus-row"><span>${yr}</span><span>${fmt}</span></div>`;
         } else {
-          el.innerHTML += `<div class="focus-row"><span>${yr}</span><span>N/D</span></div>`;
+          el.innerHTML+=`<div class="focus-row"><span>${yr}</span><span>N/D</span></div>`;
         }
-      } catch(e) {
-        el.innerHTML += `<div class="focus-row"><span>${yr}</span><span>Erro</span></div>`;
       }
+    }catch(e){
+      years.forEach(yr=>{
+        el.innerHTML+=`<div class="focus-row"><span>${yr}</span><span>—</span></div>`;
+      });
     }
     grid.appendChild(el);
   }
 }
 
+// ── NEWS (RSS) ──
+async function loadNews(){
+  const box=document.getElementById('news-box');
+  const feeds=[
+    {name:'InfoMoney', url:'https://www.infomoney.com.br/feed/'},
+    {name:'Valor Econômico', url:'https://pox.globo.com/rss/valor/'},
+  ];
+  let allItems=[];
+  for(const feed of feeds){
+    try{
+      const r=await ftch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`);
+      const d=await r.json();
+      if(d.items){
+        d.items.slice(0,5).forEach(item=>{
+          allItems.push({
+            title:item.title,
+            link:item.link,
+            date:item.pubDate,
+            source:feed.name
+          });
+        });
+      }
+    }catch(e){console.error('RSS:',feed.name,e);}
+  }
+  // Sort by date desc and take top 6
+  allItems.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  allItems=allItems.slice(0,6);
 
-// ── EXPORT PDF ──
-function exportPDF() {
-  const el = document.getElementById('dash-export');
-  const opt = {
-    margin: [10, 10],
-    filename: 'ProcIA_Dashboard_' + new Date().toISOString().slice(0,10) + '.pdf',
-    image: { type: 'jpeg', quality: 0.9 },
-    html2canvas: { scale: 1.5, backgroundColor: '#0f0f0f', useCORS: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-  };
-  html2pdf().set(opt).from(el).save();
+  if(allItems.length===0){
+    box.innerHTML='<div style="color:var(--sec);font-size:.83rem;" data-pt="Notícias indisponíveis no momento. Acesse diretamente:" data-en="News unavailable. Access directly:">Notícias indisponíveis no momento. Acesse diretamente:</div><div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap;"><a href="https://www.infomoney.com.br" target="_blank" class="btn btn-g">InfoMoney</a><a href="https://valor.globo.com" target="_blank" class="btn btn-g">Valor Econômico</a><a href="https://www.bloomberglinea.com.br" target="_blank" class="btn btn-g">Bloomberg Línea</a></div>';
+    return;
+  }
+
+  box.innerHTML=allItems.map(n=>`
+    <div class="news-item">
+      <div class="news-dot"></div>
+      <div>
+        <div class="news-title"><a href="${n.link}" target="_blank">${n.title}</a></div>
+        <div class="news-meta"><span class="news-src">${n.source}</span> · ${new Date(n.date).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── REFRESH ──
+function refreshAll(){
+  setTime();
+  loadNews();loadCambio();loadWeekly();loadChart();loadIndices();loadFocus();
+}
+
+// ── PDF ──
+function exportPDF(){
+  const el=document.getElementById('dash-export');
+  html2pdf().set({
+    margin:[10,10],
+    filename:'ProcIA_Dashboard_'+new Date().toISOString().slice(0,10)+'.pdf',
+    image:{type:'jpeg',quality:.9},
+    html2canvas:{scale:1.5,backgroundColor:'#0f0f0f',useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}
+  }).from(el).save();
 }
 
 // ── INIT ──
-(async function init() {
-  setUpdateTime();
-  await Promise.all([
-    loadCambio(),
-    loadCambioChart(),
-    loadIndices(),
-    loadFocus(),
-  ]);
-  setUpdateTime();
-  setInterval(loadCambio, 60000);
+(async function(){
+  setTime();
+  const lang=localStorage.getItem('proCIA-lang')||'pt';
+  setLang(lang);
+  await Promise.all([loadNews(),loadCambio(),loadWeekly(),loadChart(),loadIndices(),loadFocus()]);
+  setTime();
+  setInterval(loadCambio,60000);
 })();
-
-  // ── LANGUAGE TOGGLE ──
-  function setLang(lang) {
-    localStorage.setItem('proCIA-lang', lang);
-    const btnPt = document.getElementById('btn-pt');
-    const btnEn = document.getElementById('btn-en');
-    if (btnPt) { btnPt.style.background = lang==='pt'?'var(--amarelo)':'rgba(255,255,255,0.1)'; btnPt.style.color=lang==='pt'?'#000':'#aaa'; btnPt.style.border=lang==='pt'?'none':'1px solid #333'; }
-    if (btnEn) { btnEn.style.background = lang==='en'?'var(--amarelo)':'rgba(255,255,255,0.1)'; btnEn.style.color=lang==='en'?'#000':'#aaa'; btnEn.style.border=lang==='en'?'none':'1px solid #333'; }
-    document.querySelectorAll('[data-pt]').forEach(el => {
-      if (el.tagName === 'BUTTON' || el.tagName === 'A') {
-        el.textContent = lang==='en' ? (el.dataset.en||el.dataset.pt) : el.dataset.pt;
-      } else {
-        el.textContent = lang==='en' ? (el.dataset.en||el.dataset.pt) : el.dataset.pt;
-      }
-    });
-  }
-  (function(){ setLang(localStorage.getItem('proCIA-lang')||'pt'); })();
 </script>
 </body>
 </html>
