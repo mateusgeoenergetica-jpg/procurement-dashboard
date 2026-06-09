@@ -180,13 +180,15 @@
 
   <!-- ROW 2: HRC + Cobre -->
   <div class="g2">
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🔩 <span data-pt="Aço HRC (Bobina a Quente)" data-en="HRC Steel (Hot Rolled Coil)">Aço HRC (Bobina a Quente)</span></div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHRC1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🟤 <span data-pt="Cobre" data-en="Copper">Cobre</span> (COMEX)</div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHG1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
+    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🔩 <span data-pt="Aço HRC (Bobina a Quente)" data-en="HRC Steel (Hot Rolled Coil)">Aço HRC (Bobina a Quente)</span></div><div class="tv-frame" style="height:280px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHRC1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe></div></div>
+    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🟤 <span data-pt="Cobre" data-en="Copper">Cobre</span> (COMEX)</div><div class="tv-frame" style="height:280px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHG1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe></div></div>
   </div>
 
   <!-- ROW 3: Cobalto + Gás Natural -->
   <div class="g2">
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🔷 <span data-pt="Cobalto" data-en="Cobalt">Cobalto</span> (Fastmarkets)</div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3ACOB1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
+    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🔷 <span data-pt="Cobalto" data-en="Cobalt">Cobalto</span> (Fastmarkets)</div><div class="tv-frame" style="height:280px;">
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3ACOB1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe>
+      </div></div>
     <div class="cc" style="margin:0;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:280px;text-align:center;">
       <div style="font-size:2.5rem;margin-bottom:.8rem;">🛢</div>
       <div class="st" data-pt="Diesel — Logística e Obra" data-en="Diesel — Logistics & Construction">Diesel — Logística e Obra</div>
@@ -256,7 +258,7 @@ async function loadChart(){try{const [ru,re]=await Promise.all([ftch('https://ec
 
 // ═══ BCB INDICES ═══
 async function loadIdx(){
-  const series=[
+  var series=[
     {code:432,id:'i-selic',type:'rate',lb:'% a.a.'},
     {code:433,id:'i-ipca',type:'acum',lb:'% acum. 12m'},
     {code:188,id:'i-inpc',type:'acum',lb:'% acum. 12m'},
@@ -264,68 +266,76 @@ async function loadIdx(){
     {code:192,id:'i-incc',type:'acum',lb:'% acum. 12m'},
     {code:256,id:'i-tjlp',type:'rate',lb:'% a.a.'}
   ];
-  for(const s of series){
-    const el=document.getElementById(s.id);
+  for(var x=0;x<series.length;x++){
+    var s=series[x];
+    var el=document.getElementById(s.id);
+    var nextTd=el?el.nextElementSibling:null;
     try{
       if(s.type==='rate'){
-        const r=await ftch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.'+s.code+'/dados/ultimos/1?formato=json');
-        const d=await r.json();
-        const val=parseFloat(d[0].valor).toFixed(2);
-        const ref=d[0].data||'';
-        el.innerHTML='<strong>'+val+'%</strong> <span style="font-size:.65rem;color:var(--s)">'+s.lb+'</span><br><span style="font-size:.6rem;color:var(--s)">ref: '+ref+'</span>';
-        el.nextElementSibling.innerHTML='<span style="color:var(--s);font-size:.78rem;">—</span>';
+        var r=await ftch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.'+s.code+'/dados/ultimos/1?formato=json');
+        var d=await r.json();
+        var val=parseFloat(d[0].valor).toFixed(2);
+        var ref=d[0].data||'';
+        el.innerHTML='<strong>'+val+'%</strong> <span style="font-size:.63rem;color:var(--s)">'+s.lb+'</span><br><span style="font-size:.58rem;color:var(--s)">ref: '+ref+'</span>';
+        if(nextTd) nextTd.innerHTML='<span style="color:var(--s);font-size:.78rem;">—</span>';
       }else{
-        const r=await ftch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.'+s.code+'/dados/ultimos/13?formato=json');
-        const d=await r.json();
+        var r=await ftch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.'+s.code+'/dados/ultimos/13?formato=json');
+        var d=await r.json();
         if(d.length>=12){
-          var a=1; d.slice(-12).forEach(function(m){a*=(1+parseFloat(m.valor)/100);});
-          const acum=((a-1)*100).toFixed(2);
-          const lastVal=parseFloat(d[d.length-1].valor).toFixed(2);
-          const lastDate=d[d.length-1].data||'';
-          el.innerHTML='<strong>'+acum+'%</strong> <span style="font-size:.65rem;color:var(--s)">'+s.lb+'</span><br><span style="font-size:.6rem;color:var(--s)">ref: '+lastDate+'</span>';
-          const lastNum=parseFloat(lastVal);
-          const cls=lastNum>0?'dn':'up';
-          const arrow=lastNum>0?'▲':'▼';
-          el.nextElementSibling.innerHTML='<span class="'+cls+'" style="font-weight:700;font-size:.85rem;">'+lastVal+'% '+arrow+'</span>';
+          var a=1;
+          for(var m=d.length-12;m<d.length;m++){a*=(1+parseFloat(d[m].valor)/100);}
+          var acum=((a-1)*100).toFixed(2);
+          var lastVal=parseFloat(d[d.length-1].valor);
+          var lastDate=d[d.length-1].data||'';
+          el.innerHTML='<strong>'+acum+'%</strong> <span style="font-size:.63rem;color:var(--s)">'+s.lb+'</span><br><span style="font-size:.58rem;color:var(--s)">ref: '+lastDate+'</span>';
+          if(nextTd){
+            var cls=lastVal>0?'dn':'up';
+            var arrow=lastVal>0?'▲':'▼';
+            if(lastVal===0){cls='';arrow='=';}
+            nextTd.innerHTML='<span class="'+cls+'" style="font-weight:700;font-size:.85rem;">'+lastVal.toFixed(2)+'% '+arrow+'</span>';
+          }
         }else{
           el.textContent='N/D';
-          el.nextElementSibling.textContent='—';
+          if(nextTd) nextTd.textContent='—';
         }
       }
     }catch(e){
       el.textContent='—';
-      if(el.nextElementSibling) el.nextElementSibling.textContent='—';
+      if(nextTd) nextTd.textContent='—';
     }
   }
 }
 
 // ═══ FOCUS ═══
 async function loadFocus(){
-  const inds=[
+  var inds=[
     {name:'IPCA',query:'IPCA',unit:'%',det:null},
     {name:'PIB Total',query:'PIB Total',unit:'%',det:null},
     {name:'Câmbio (R$/US$)',query:'Taxa de câmbio',unit:'R$',det:'Fim do ano'},
     {name:'Selic (% a.a.)',query:'Meta para taxa over-selic',unit:'%',det:'Fim do ano'},
-    {name:'IGP-M',query:'IGP-M',unit:'%',det:null},
+    {name:'IGP-M',query:'IGP-M',unit:'%',det:null}
   ];
-  const yrs=[2026,2027,2028,2029];
-  const tbody=document.getElementById('focus-tbody');
+  var yrs=[2026,2027,2028,2029];
+  var tbody=document.getElementById('focus-tbody');
+  if(!tbody) return;
   tbody.innerHTML='';
-  for(var i=0;i<inds.length;i++){
-    var ind=inds[i];
-    var tr=document.createElement('tr');
-    tr.innerHTML='<td><strong>'+ind.name+'</strong></td>';
-    try{
-      var filterParts=['Indicador%20eq%20%27'+encodeURIComponent(ind.query)+'%27'];
-      if(ind.det) filterParts.push('IndicadorDetalhe%20eq%20%27'+encodeURIComponent(ind.det)+'%27');
-      var filterStr=filterParts.join('%20and%20');
-      var url='https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?%24filter='+filterStr+'&%24top=500&%24orderby=Data%20desc&%24format=json&%24select=Indicador,IndicadorDetalhe,Data,DataReferencia,Mediana';
-      var r=await ftch(url,15000);
-      var d=await r.json();
-      var values=d.value||[];
+  try{
+    var url='https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?$top=2000&$orderby=Data%20desc&$format=json&$select=Indicador,IndicadorDetalhe,Data,DataReferencia,Mediana';
+    var r=await ftch(url,20000);
+    var d=await r.json();
+    var allValues=d.value||[];
+    for(var i=0;i<inds.length;i++){
+      var ind=inds[i];
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td><strong>'+ind.name+'</strong></td>';
       for(var j=0;j<yrs.length;j++){
         var yr=yrs[j];
-        var matches=values.filter(function(v){return Number(v.DataReferencia)===yr;});
+        var matches=allValues.filter(function(v){
+          if(v.Indicador!==ind.query) return false;
+          if(Number(v.DataReferencia)!==yr) return false;
+          if(ind.det && v.IndicadorDetalhe!==ind.det) return false;
+          return true;
+        });
         if(matches.length>0){
           var med=parseFloat(matches[0].Mediana);
           var prev=matches.length>5?parseFloat(matches[5].Mediana):null;
@@ -341,10 +351,15 @@ async function loadFocus(){
           tr.innerHTML+='<td style="color:var(--s);">N/D</td>';
         }
       }
-    }catch(e){
-      for(var k=0;k<4;k++) tr.innerHTML+='<td style="color:var(--s);">—</td>';
+      tbody.appendChild(tr);
     }
-    tbody.appendChild(tr);
+  }catch(e){
+    for(var i=0;i<inds.length;i++){
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td><strong>'+inds[i].name+'</strong></td>';
+      for(var k=0;k<4;k++) tr.innerHTML+='<td style="color:var(--s);">—</td>';
+      tbody.appendChild(tr);
+    }
   }
 }
 
