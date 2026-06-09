@@ -75,6 +75,73 @@
   .ud{font-size:.7rem;color:var(--s);font-family:'DM Mono',monospace;}
   .tv-frame{border-radius:6px;overflow:hidden;height:280px;}
   .tv-frame iframe{border:1px solid var(--b);border-radius:6px;}
+
+  /* ═══ REDESIGN v2 ═══ */
+  header{border-bottom:2px solid var(--y);box-shadow:0 2px 0 0 #EEE1CD20;}
+  .by,.bg{border-radius:6px;transition:all .2s;}
+  .by:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(255,196,0,.3);}
+  .bg:hover{transform:translateY(-1px);}
+  .lb{border-radius:5px;transition:all .15s;}
+
+  /* SIDEBAR redesign */
+  .sa.on{background:rgba(255,196,0,.12);color:var(--y);border-left:3px solid var(--y);padding-left:calc(.7rem - 3px);}
+  .sa:hover{border-left:3px solid rgba(255,196,0,.3);padding-left:calc(.7rem - 3px);}
+  .sl{margin-top:1.2rem;margin-bottom:.5rem;padding-bottom:.3rem;border-bottom:1px solid var(--b);}
+
+  /* CARDS general */
+  .kc,.cc,.cmd{border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:all .2s;}
+  .kc:hover,.cc:hover{box-shadow:0 4px 16px rgba(0,0,0,.35);}
+  .cmd:hover{box-shadow:0 4px 16px rgba(255,196,0,.15);border-color:var(--y);}
+
+  /* SECTION SPACING */
+  .dv{margin:.8rem 0 1.8rem;border-image:linear-gradient(90deg,transparent,var(--y),transparent) 1;}
+  .st{font-size:.92rem;font-weight:700;letter-spacing:.01em;}
+  .ss{font-size:.74rem;margin-bottom:1rem;}
+
+  /* NEWS redesign */
+  .news-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+  .news-badge-market{background:var(--y);color:#000;}
+  .news-badge-biogas{background:rgba(74,222,128,.15);color:var(--g);}
+  .ni{padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s;border-radius:4px;padding-left:.6rem;border-left:3px solid transparent;}
+  .ni:hover{background:rgba(255,255,255,.03);}
+  .ni-market{border-left-color:var(--y);}
+  .ni-biogas{border-left-color:var(--g);}
+  .ni:last-child{border-bottom:none;}
+  .nt{font-size:.86rem;font-weight:700;line-height:1.4;}
+  .nt a{transition:color .15s;}
+  .nm{font-size:.68rem;margin-top:.2rem;}
+
+  /* CAMBIO flags */
+  .kc-flag{font-size:1.4rem;margin-right:.4rem;vertical-align:middle;}
+  .kv{font-size:1.8rem;}
+  .kd-pill{display:inline-block;padding:1px 8px;border-radius:4px;font-size:.72rem;font-weight:600;margin-top:.2rem;}
+  .kd-pill.up{background:rgba(74,222,128,.12);color:var(--g);}
+  .kd-pill.dn{background:rgba(248,113,113,.12);color:var(--r);}
+
+  /* BCB TABLE redesign */
+  table.ix tr{position:relative;}
+  table.ix td:first-child{border-left:3px solid transparent;padding-left:1rem;}
+  table.ix tr.row-ok td:first-child{border-left-color:var(--g);}
+  table.ix tr.row-warn td:first-child{border-left-color:var(--r);}
+  table.ix tr.row-ref td:first-child{border-left-color:var(--y);}
+  table.ix th{background:rgba(255,196,0,.04);padding:.7rem .75rem;}
+  .bcb-ts{text-align:right;font-size:.7rem;color:var(--s);padding-top:.6rem;font-family:DM Mono,monospace;display:flex;align-items:center;justify-content:flex-end;gap:.3rem;}
+
+  /* FOCUS header */
+  #focus-table thead th{background:rgba(255,196,0,.06);}
+
+  /* COMMODITIES differentiation */
+  .tv-live{position:relative;}
+  .tv-live::before{content:'AO VIVO';position:absolute;top:8px;right:10px;background:var(--r);color:#fff;font-size:.55rem;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:3px;z-index:2;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+  .cmd-ext{position:relative;}
+  .cmd-ext::after{content:'LINK EXTERNO';position:absolute;top:8px;right:8px;font-size:.5rem;font-weight:700;letter-spacing:.08em;color:var(--s);background:rgba(255,255,255,.06);padding:2px 6px;border-radius:3px;}
+  .cmd{border-style:dashed;border-color:var(--b);}
+  .cmd:hover{border-style:solid;border-color:var(--y);}
+
+  /* GENERAL refinements */
+  .g2,.g3,.g4{gap:1.1rem;}
+  body{letter-spacing:.01em;}
 </style>
 </head>
 <body>
@@ -114,12 +181,14 @@
   <!-- ═══ NEWS ═══ -->
   <div class="g2" style="align-items:start;">
     <div id="sec-news">
-      <div class="st" data-pt="📰 Mercado e Economia" data-en="📰 Market & Economy">📰 Mercado e Economia</div>
+      <div class="news-badge news-badge-market" data-pt="📰 ÚLTIMAS NOTÍCIAS" data-en="📰 LATEST NEWS">📰 ÚLTIMAS NOTÍCIAS</div>
+      <div class="st" data-pt="Mercado e Economia" data-en="Market & Economy">Mercado e Economia</div>
       <div class="ss" data-pt="InfoMoney, Valor Econômico • RSS" data-en="InfoMoney, Valor Econômico • RSS">InfoMoney, Valor Econômico • RSS</div>
       <div class="cc" id="nbox" style="max-height:420px;overflow-y:auto;"><div style="color:var(--s);font-size:.8rem;"><span class="sp"></span> <span data-pt="Carregando…" data-en="Loading…">Carregando…</span></div></div>
     </div>
     <div id="sec-biogas">
-      <div class="st" data-pt="🌿 Biogás e Biometano" data-en="🌿 Biogas & Biomethane">🌿 Biogás e Biometano</div>
+      <div class="news-badge news-badge-biogas" data-pt="🌿 ALERTAS BIOGÁS" data-en="🌿 BIOGAS ALERTS">🌿 ALERTAS BIOGÁS</div>
+      <div class="st" data-pt="Biogás e Biometano" data-en="Biogas & Biomethane">Biogás e Biometano</div>
       <div class="ss" data-pt="Google Alerts • Monitoramento automático" data-en="Google Alerts • Automatic monitoring">Google Alerts • Monitoramento automático</div>
       <div class="cc" id="biogas-box" style="max-height:420px;overflow-y:auto;"><div style="color:var(--s);font-size:.8rem;"><span class="sp"></span> <span data-pt="Carregando…" data-en="Loading…">Carregando…</span></div></div>
     </div>
@@ -131,8 +200,8 @@
   <div class="st" data-pt="Câmbio ao Vivo — USD e EUR" data-en="Live Exchange — USD & EUR">Câmbio ao Vivo — USD e EUR</div>
   <div class="ss" data-pt="Fonte: AwesomeAPI • Atualização a cada 60s" data-en="Source: AwesomeAPI • Refresh every 60s">Fonte: AwesomeAPI • Atualização a cada 60s</div>
   <div class="g2">
-    <div class="kc"><div class="kl">USD / BRL</div><div class="kv y" id="uv">—</div><div class="kd" id="ud">—</div><div class="ks" id="uw" data-pt="Semanal: —" data-en="Weekly: —">Semanal: —</div></div>
-    <div class="kc"><div class="kl">EUR / BRL</div><div class="kv y" id="ev">—</div><div class="kd" id="ed">—</div><div class="ks" id="ew" data-pt="Semanal: —" data-en="Weekly: —">Semanal: —</div></div>
+    <div class="kc"><div class="kl"><span class="kc-flag">🇺🇸</span> USD / BRL</div><div class="kv y" id="uv">—</div><div class="kd" id="ud">—</div><div class="ks" id="uw" data-pt="Semanal: —" data-en="Weekly: —">Semanal: —</div></div>
+    <div class="kc"><div class="kl"><span class="kc-flag">🇪🇺</span> EUR / BRL</div><div class="kv y" id="ev">—</div><div class="kd" id="ed">—</div><div class="ks" id="ew" data-pt="Semanal: —" data-en="Weekly: —">Semanal: —</div></div>
   </div>
   <div class="cc"><div class="st" data-pt="USD/BRL e EUR/BRL — Últimos 7 dias" data-en="USD/BRL & EUR/BRL — Last 7 days">USD/BRL e EUR/BRL — Últimos 7 dias</div><div class="ss" data-pt="Cotação de fechamento diário" data-en="Daily closing rate">Cotação de fechamento diário</div><canvas id="fxChart" height="75"></canvas></div>
   <hr class="dv" id="sec-ix">
@@ -149,7 +218,7 @@
       <tr><td><strong>INCC</strong></td><td data-pt="Construção civil" data-en="Construction">Construção civil</td><td id="i-incc"><span class="sp"></span></td><td></td><td data-pt="CAPEX — obras" data-en="CAPEX — construction">CAPEX — obras</td><td><span class="bd bd-r" data-pt="Atenção" data-en="Attention">Atenção</span></td></tr>
       <tr><td><strong>TJLP</strong></td><td data-pt="Taxa longo prazo (BNDES)" data-en="Long-term rate (BNDES)">Taxa longo prazo (BNDES)</td><td id="i-tjlp"><span class="sp"></span></td><td></td><td data-pt="Financiamento BNDES" data-en="BNDES financing">Financiamento BNDES</td><td><span class="bd bd-y" data-pt="Referência" data-en="Reference">Referência</span></td></tr>
     </tbody></table>
-    <div id="bcb-timestamp" style="text-align:right;font-size:.68rem;color:var(--s);padding-top:.5rem;font-family:DM Mono,monospace;" data-pt="Última atualização BCB: carregando…" data-en="Last BCB update: loading…">Última atualização BCB: carregando…</div>
+    <div id="bcb-timestamp" class="bcb-ts" style="text-align:right;font-size:.68rem;color:var(--s);padding-top:.5rem;font-family:DM Mono,monospace;" data-pt="Última atualização BCB: carregando…" data-en="Last BCB update: loading…">Última atualização BCB: carregando…</div>
   </div>
   <hr class="dv" id="sec-fc">
 
@@ -175,14 +244,14 @@
 
   <!-- ROW 1: Brent + BDI -->
   <div class="g2">
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🛢️ Brent Crude</div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=TVC%3AUKOIL&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">⚓ Baltic Dry Index</div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=INDEX%3ABDI&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
+    <div class="cc tv-live" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🛢️ Brent Crude</div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=TVC%3AUKOIL&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
+    <div class="cc tv-live" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">⚓ Baltic Dry Index</div><div class="tv-frame"><iframe src="https://s.tradingview.com/widgetembed/?symbol=INDEX%3ABDI&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no"></iframe></div></div>
   </div>
 
   <!-- ROW 2: HRC + Cobre -->
   <div class="g2">
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🔩 <span data-pt="Aço HRC (Bobina a Quente)" data-en="HRC Steel (Hot Rolled Coil)">Aço HRC (Bobina a Quente)</span></div><div class="tv-frame" style="height:280px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHRC1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe></div></div>
-    <div class="cc" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🟤 <span data-pt="Cobre" data-en="Copper">Cobre</span> (COMEX)</div><div class="tv-frame" style="height:280px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHG1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe></div></div>
+    <div class="cc tv-live" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🔩 <span data-pt="Aço HRC (Bobina a Quente)" data-en="HRC Steel (Hot Rolled Coil)">Aço HRC (Bobina a Quente)</span></div><div class="tv-frame" style="height:280px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHRC1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe></div></div>
+    <div class="cc tv-live" style="margin:0;"><div class="st" style="margin-bottom:.6rem;">🟤 <span data-pt="Cobre" data-en="Copper">Cobre</span> (COMEX)</div><div class="tv-frame" style="height:280px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=COMEX%3AHG1!&interval=D&theme=dark&style=1&toolbar_bg=%231a1a1a&hide_top_toolbar=0&save_image=0&studies=%5B%5D&show_popup_button=0&popup_width=600&popup_height=400&locale=pt" width="100%" height="280" frameborder="0" scrolling="no" style="border-radius:6px;"></iframe></div></div>
   </div>
 
   <!-- ROW 3: Cobalto + Gás Natural -->
@@ -219,11 +288,11 @@
   <div class="st" style="margin-top:.5rem;" data-pt="Fontes Complementares — Links Diretos" data-en="Additional Sources — Direct Links">Fontes Complementares — Links Diretos</div>
   <div class="ss" data-pt="Dados oficiais brasileiros e internacionais" data-en="Official Brazilian and international data">Dados oficiais brasileiros e internacionais</div>
   <div class="g4">
-    <a href="https://en.macromicro.me/charts/35158/fbx-global-container-index" target="_blank" class="cmd"><div class="cmd-i">🚢</div><div class="cmd-n" data-pt="FBX — Frete Contêiner" data-en="FBX — Container Freight">FBX — Frete Contêiner</div><div class="cmd-d" data-pt="Freightos Baltic Index — gráfico gratuito MacroMicro" data-en="Freightos Baltic Index — free chart MacroMicro">Freightos Baltic Index — gráfico gratuito MacroMicro</div><span class="cmd-l">MacroMicro →</span></a>
-    <a href="https://tradingeconomics.com/commodity/stainless-steel" target="_blank" class="cmd"><div class="cmd-i">✨</div><div class="cmd-n" data-pt="Aço Inoxidável" data-en="Stainless Steel">Aço Inoxidável</div><div class="cmd-d" data-pt="Tanques, tubulações e vasos de pressão" data-en="Tanks, piping and pressure vessels">Tanques, tubulações e vasos de pressão</div><span class="cmd-l">TradingEconomics →</span></a>
-    <a href="https://www.cbic.org.br/en-numeros/dados-do-setor/" target="_blank" class="cmd"><div class="cmd-i">🧱</div><div class="cmd-n" data-pt="Cimento (CBIC)" data-en="Cement (CBIC)">Cimento (CBIC)</div><div class="cmd-d" data-pt="Câmara Brasileira da Indústria da Construção — dados do setor" data-en="Brazilian Chamber of Construction Industry — sector data">Câmara Brasileira da Indústria da Construção — dados do setor</div><span class="cmd-l">cbic.org.br →</span></a>
-    <a href="https://www.ccee.org.br/precos/painel-precos" target="_blank" class="cmd"><div class="cmd-i">⚡</div><div class="cmd-n" data-pt="PLD — Energia Elétrica" data-en="PLD — Electricity Price">PLD — Energia Elétrica</div><div class="cmd-d" data-pt="Preço de liquidação — mercado livre (CCEE)" data-en="Settlement price — free market (CCEE)">Preço de liquidação — mercado livre (CCEE)</div><span class="cmd-l">ccee.org.br →</span></a>
-    <a href="https://precos.petrobras.com.br/" target="_blank" class="cmd"><div class="cmd-i">🛢</div><div class="cmd-n" data-pt="Diesel — Petrobras" data-en="Diesel — Petrobras">Diesel — Petrobras</div><div class="cmd-d" data-pt="Preços de referência de combustíveis Petrobras" data-en="Petrobras fuel reference prices">Preços de referência de combustíveis Petrobras</div><span class="cmd-l">petrobras.com.br →</span></a>
+    <a href="https://en.macromicro.me/charts/35158/fbx-global-container-index" target="_blank" class="cmd cmd-ext"><div class="cmd-i">🚢</div><div class="cmd-n" data-pt="FBX — Frete Contêiner" data-en="FBX — Container Freight">FBX — Frete Contêiner</div><div class="cmd-d" data-pt="Freightos Baltic Index — gráfico gratuito MacroMicro" data-en="Freightos Baltic Index — free chart MacroMicro">Freightos Baltic Index — gráfico gratuito MacroMicro</div><span class="cmd-l">MacroMicro →</span></a>
+    <a href="https://tradingeconomics.com/commodity/stainless-steel" target="_blank" class="cmd cmd-ext"><div class="cmd-i">✨</div><div class="cmd-n" data-pt="Aço Inoxidável" data-en="Stainless Steel">Aço Inoxidável</div><div class="cmd-d" data-pt="Tanques, tubulações e vasos de pressão" data-en="Tanks, piping and pressure vessels">Tanques, tubulações e vasos de pressão</div><span class="cmd-l">TradingEconomics →</span></a>
+    <a href="https://www.cbic.org.br/en-numeros/dados-do-setor/" target="_blank" class="cmd cmd-ext"><div class="cmd-i">🧱</div><div class="cmd-n" data-pt="Cimento (CBIC)" data-en="Cement (CBIC)">Cimento (CBIC)</div><div class="cmd-d" data-pt="Câmara Brasileira da Indústria da Construção — dados do setor" data-en="Brazilian Chamber of Construction Industry — sector data">Câmara Brasileira da Indústria da Construção — dados do setor</div><span class="cmd-l">cbic.org.br →</span></a>
+    <a href="https://www.ccee.org.br/precos/painel-precos" target="_blank" class="cmd cmd-ext"><div class="cmd-i">⚡</div><div class="cmd-n" data-pt="PLD — Energia Elétrica" data-en="PLD — Electricity Price">PLD — Energia Elétrica</div><div class="cmd-d" data-pt="Preço de liquidação — mercado livre (CCEE)" data-en="Settlement price — free market (CCEE)">Preço de liquidação — mercado livre (CCEE)</div><span class="cmd-l">ccee.org.br →</span></a>
+    <a href="https://precos.petrobras.com.br/" target="_blank" class="cmd cmd-ext"><div class="cmd-i">🛢</div><div class="cmd-n" data-pt="Diesel — Petrobras" data-en="Diesel — Petrobras">Diesel — Petrobras</div><div class="cmd-d" data-pt="Preços de referência de combustíveis Petrobras" data-en="Petrobras fuel reference prices">Preços de referência de combustíveis Petrobras</div><span class="cmd-l">petrobras.com.br →</span></a>
   </div>
 
   <!-- LINKS EXTRAS -->
@@ -384,7 +453,7 @@ async function loadBiogasNews(){
         var title=n.title.replace(/<[^>]*>/g,'');
         var dateStr='';
         try{dateStr=new Date(n.pubDate).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}catch(e){}
-        return '<div class="ni"><div class="nd" style="background:#4ade80;"></div><div><div class="nt"><a href="'+n.link+'" target="_blank">'+title+'</a></div><div class="nm"><span class="ns" style="color:#4ade80;">Google Alerts</span> · '+dateStr+'</div></div></div>';
+        return '<div class="ni ni-biogas"><div class="nd" style="background:#4ade80;"></div><div><div class="nt"><a href="'+n.link+'" target="_blank">'+title+'</a></div><div class="nm"><span class="ns" style="color:#4ade80;">Google Alerts</span> · '+dateStr+'</div></div></div>';
       }).join('');
     }else{
       box.innerHTML='<div style="color:var(--s);font-size:.82rem;" data-pt="Sem alertas recentes. Acesse:" data-en="No recent alerts. Visit:">Sem alertas recentes. Acesse:</div><div style="margin-top:.4rem;"><a href="https://www.abiogaz.org.br" target="_blank" class="btn bg" style="font-size:.75rem;">ABiogás</a> <a href="https://www.cibiogas.org" target="_blank" class="btn bg" style="font-size:.75rem;">CIBiogás</a></div>';
