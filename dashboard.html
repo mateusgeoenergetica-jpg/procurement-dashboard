@@ -309,11 +309,11 @@ async function loadIdx(){
 // ═══ FOCUS ═══
 async function loadFocus(){
   var inds=[
-    {name:'IPCA',query:'IPCA',unit:'%',det:null},
-    {name:'PIB Total',query:'PIB Total',unit:'%',det:null},
-    {name:'Câmbio (R$/US$)',query:'Taxa de câmbio',unit:'R$',det:'Fim do ano'},
-    {name:'Selic (% a.a.)',query:'Meta para taxa over-selic',unit:'%',det:'Fim do ano'},
-    {name:'IGP-M',query:'IGP-M',unit:'%',det:null}
+    {name:'IPCA',enc:'IPCA',unit:'%',det:null},
+    {name:'PIB Total',enc:'PIB%20Total',unit:'%',det:null},
+    {name:'C\u00e2mbio (R$/US$)',enc:'Taxa%20de%20c%C3%A2mbio',unit:'R$',det:'Fim do ano'},
+    {name:'Selic (% a.a.)',enc:'Meta%20para%20taxa%20over-selic',unit:'%',det:'Fim do ano'},
+    {name:'IGP-M',enc:'IGP-M',unit:'%',det:null}
   ];
   var yrs=[2026,2027,2028,2029];
   var tbody=document.getElementById('focus-tbody');
@@ -324,13 +324,7 @@ async function loadFocus(){
     var tr=document.createElement('tr');
     tr.innerHTML='<td><strong>'+ind.name+'</strong></td>';
     try{
-      var p=new URLSearchParams();
-      p.set('$filter',"Indicador eq '"+ind.query+"'");
-      p.set('$top','100');
-      p.set('$orderby','Data desc');
-      p.set('$format','json');
-      p.set('$select','Indicador,IndicadorDetalhe,Data,DataReferencia,Mediana');
-      var url='https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?'+p.toString();
+      var url='https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?$top=100&$orderby=Data%20desc&$format=json&$select=Indicador,IndicadorDetalhe,Data,DataReferencia,Mediana&$filter=Indicador%20eq%20%27'+ind.enc+'%27';
       var r=await ftch(url,15000);
       var d=await r.json();
       var values=d.value||[];
@@ -347,8 +341,8 @@ async function loadFocus(){
           var fmt=ind.unit==='R$'?'R$ '+med.toFixed(2):med.toFixed(2)+'%';
           var arrow='';
           if(prev!==null){
-            if(med>prev) arrow=' <span style="color:var(--r);font-size:.7rem;">▲</span>';
-            else if(med<prev) arrow=' <span style="color:var(--g);font-size:.7rem;">▼</span>';
+            if(med>prev) arrow=' <span style="color:var(--r);font-size:.7rem;">\u25B2</span>';
+            else if(med<prev) arrow=' <span style="color:var(--g);font-size:.7rem;">\u25BC</span>';
             else arrow=' <span style="color:var(--s);font-size:.7rem;">=</span>';
           }
           tr.innerHTML+='<td style="font-weight:600;font-family:DM Mono,monospace;">'+fmt+arrow+'</td>';
@@ -357,7 +351,7 @@ async function loadFocus(){
         }
       }
     }catch(e){
-      for(var k=0;k<4;k++) tr.innerHTML+='<td style="color:var(--s);">—</td>';
+      for(var k=0;k<4;k++) tr.innerHTML+='<td style="color:var(--s);">&mdash;</td>';
     }
     tbody.appendChild(tr);
   }
