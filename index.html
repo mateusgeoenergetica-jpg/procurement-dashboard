@@ -178,23 +178,7 @@
 
   .btn-outline:hover { border-color: var(--amarelo); color: var(--amarelo); }
 
-  /* ── KPI STRIP ── */
-  .kpi-strip {
-    background: var(--cinza-card);
-    border-top: 1px solid var(--cinza-borda);
-    border-bottom: 1px solid var(--cinza-borda);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0;
-  }
-
-  .kpi-item {
-    padding: 1.25rem 2rem;
-    border-right: 1px solid var(--cinza-borda);
-    position: relative;
-  }
-
-  .kpi-item:last-child { border-right: none; }
+  
 
   .kpi-label {
     font-size: 0.72rem;
@@ -379,33 +363,7 @@
   </div>
 </section>
 
-<div class="kpi-strip">
-  <div class="kpi-item">
-    <div class="kpi-label" data-pt="Fornecedores Ativos" data-en="Active Suppliers">Fornecedores Ativos</div>
-    <div class="kpi-value amarelo">—</div>
-    <div class="kpi-delta" data-pt="Acesse a lista" data-en="View list">Acesse a lista</div>
-  </div>
-  <div class="kpi-item">
-    <div class="kpi-label">Selic (12m)</div>
-    <div class="kpi-value" id="selic-kpi">—</div>
-    <div class="kpi-delta" id="selic-delta">carregando…</div>
-  </div>
-  <div class="kpi-item">
-    <div class="kpi-label">IPCA (12m)</div>
-    <div class="kpi-value" id="ipca-kpi">—</div>
-    <div class="kpi-delta" id="ipca-delta">carregando…</div>
-  </div>
-  <div class="kpi-item">
-    <div class="kpi-label">USD / BRL</div>
-    <div class="kpi-value" id="usd-kpi">—</div>
-    <div class="kpi-delta" id="usd-delta">carregando…</div>
-  </div>
-  <div class="kpi-item">
-    <div class="kpi-label">INCC (12m)</div>
-    <div class="kpi-value" id="incc-kpi">—</div>
-    <div class="kpi-delta" id="incc-delta">carregando…</div>
-  </div>
-</div>
+
 
 <div class="main-grid">
 
@@ -486,47 +444,7 @@
 </footer>
 
 <script>
-async function fetchWithTimeout(url, ms=8000) {
-    const ctrl = new AbortController();
-    const id = setTimeout(() => ctrl.abort(), ms);
-    try { const r = await fetch(url, {signal: ctrl.signal}); clearTimeout(id); return r; }
-    catch(e) { clearTimeout(id); throw e; }
-  }
-  async function fetchKPIs() {
-  // USD/BRL via AwesomeAPI
-  try {
-    const r = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/USD-BRL');
-    const d = await r.json();
-    const v = parseFloat(d.USDBRL.bid).toFixed(2);
-    document.getElementById('usd-kpi').textContent = 'R$ ' + v;
-    const pct = parseFloat(d.USDBRL.pctChange).toFixed(2);
-    const el = document.getElementById('usd-delta');
-    el.textContent = (pct >= 0 ? '▲' : '▼') + ' ' + Math.abs(pct) + '% hoje';
-    el.className = 'kpi-delta' + (pct < 0 ? '' : ' neg');
-  } catch(e) { document.getElementById('usd-kpi').textContent = 'N/D'; }
 
-  // BCB SGS: Selic=432, IPCA=433, INCC=192
-  const series = [
-    {id:'selic-kpi',delta:'selic-delta', code:432, label:'a.a.'},
-    {id:'ipca-kpi', delta:'ipca-delta',  code:433, label:'acum.'},
-    {id:'incc-kpi', delta:'incc-delta',  code:192, label:'acum.'},
-  ];
-  for (const s of series) {
-    try {
-      const r = await fetchWithTimeout(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.code}/dados/ultimos/1?formato=json`);
-      const d = await r.json();
-      const v = parseFloat(d[0].valor).toFixed(2);
-      document.getElementById(s.id).textContent = v + '%';
-      document.getElementById(s.delta).textContent = s.label;
-    } catch(e) {
-      const el = document.getElementById(s.id);
-      if (el) el.textContent = '—';
-      const del = document.getElementById(s.delta);
-      if (del) del.textContent = 'ver dashboard';
-    }
-  }
-}
-fetchKPIs();
 
   // ── LANGUAGE TOGGLE ──
   const i18n = {
