@@ -149,6 +149,7 @@
       <tr><td><strong>INCC</strong></td><td data-pt="Construção civil" data-en="Construction">Construção civil</td><td id="i-incc"><span class="sp"></span></td><td></td><td data-pt="CAPEX — obras" data-en="CAPEX — construction">CAPEX — obras</td><td><span class="bd bd-r" data-pt="Atenção" data-en="Attention">Atenção</span></td></tr>
       <tr><td><strong>TJLP</strong></td><td data-pt="Taxa longo prazo (BNDES)" data-en="Long-term rate (BNDES)">Taxa longo prazo (BNDES)</td><td id="i-tjlp"><span class="sp"></span></td><td></td><td data-pt="Financiamento BNDES" data-en="BNDES financing">Financiamento BNDES</td><td><span class="bd bd-y" data-pt="Referência" data-en="Reference">Referência</span></td></tr>
     </tbody></table>
+    <div id="bcb-timestamp" style="text-align:right;font-size:.68rem;color:var(--s);padding-top:.5rem;font-family:DM Mono,monospace;" data-pt="Última atualização BCB: carregando…" data-en="Last BCB update: loading…">Última atualização BCB: carregando…</div>
   </div>
   <hr class="dv" id="sec-fc">
 
@@ -304,16 +305,21 @@ async function loadIdx(){
       if(nextTd) nextTd.textContent='—';
     }
   }
+  var tsEl=document.getElementById('bcb-timestamp');
+  if(tsEl){
+    var lang=localStorage.getItem('proCIA-lang')==='en';
+    tsEl.textContent=(lang?'Last BCB update: ':'Última atualização BCB: ')+new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  }
 }
 
 // ═══ FOCUS ═══
 async function loadFocus(){
   var inds=[
-    {name:'IPCA',enc:'IPCA',unit:'%',det:null},
-    {name:'PIB Total',enc:'PIB%20Total',unit:'%',det:null},
-    {name:'C\u00e2mbio (R$/US$)',enc:'C%C3%A2mbio',unit:'R$',det:null},
-    {name:'Selic (% a.a.)',enc:'Selic',unit:'%',det:null},
-    {name:'IGP-M',enc:'IGP-M',unit:'%',det:null}
+    {name:'IPCA',enc:'IPCA',unit:'%',det:null,upBad:true},
+    {name:'PIB Total',enc:'PIB%20Total',unit:'%',det:null,upBad:false},
+    {name:'C\u00e2mbio (R$/US$)',enc:'C%C3%A2mbio',unit:'R$',det:null,upBad:true},
+    {name:'Selic (% a.a.)',enc:'Selic',unit:'%',det:null,upBad:true},
+    {name:'IGP-M',enc:'IGP-M',unit:'%',det:null,upBad:true}
   ];
   var yrs=[2026,2027,2028,2029];
   var tbody=document.getElementById('focus-tbody');
@@ -341,9 +347,15 @@ async function loadFocus(){
           var fmt=ind.unit==='R$'?'R$ '+med.toFixed(2):med.toFixed(2)+'%';
           var arrow='';
           if(prev!==null){
-            if(med>prev) arrow=' <span style="color:var(--r);font-size:.7rem;">\u25B2</span>';
-            else if(med<prev) arrow=' <span style="color:var(--g);font-size:.7rem;">\u25BC</span>';
-            else arrow=' <span style="color:var(--s);font-size:.7rem;">=</span>';
+            if(med>prev){
+              var c=ind.upBad?'var(--r)':'var(--g)';
+              arrow=' <span style="color:'+c+';font-size:.7rem;">\u25B2</span>';
+            }else if(med<prev){
+              var c=ind.upBad?'var(--g)':'var(--r)';
+              arrow=' <span style="color:'+c+';font-size:.7rem;">\u25BC</span>';
+            }else{
+              arrow=' <span style="color:var(--s);font-size:.7rem;">=</span>';
+            }
           }
           tr.innerHTML+='<td style="font-weight:600;font-family:DM Mono,monospace;">'+fmt+arrow+'</td>';
         }else{
